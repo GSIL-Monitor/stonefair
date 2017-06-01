@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>金泓信展商管理后台</title>
+    <link rel="stylesheet" type="text/css" href="${base}/resource/easyui/themes/metro-blue/easyui.css">
+    <link rel="stylesheet" type="text/css" href="${base}/resource/easyui/themes/icon.css">
+    <script type="text/javascript" src="${base}/resource/jquery.min.js"></script>
+    <script type="text/javascript" src="${base}/resource/easyui/jquery.easyui.min.js"></script>
+    <script type="text/javascript" src="${base}/resource/easyui/empty-view.js"></script>
+    <script type="text/javascript" src="${base}/resource/ajaxfileupload.js"></script>
+    <script type="text/javascript" src="${base}/resource/common.js"></script>
+    <script type="text/javascript" src="${base}/resource/easyui/easyui-validate.js"></script>
+    <style>
+        body {
+            margin: 0px;
+            padding: 0px;
+            width: 100%;
+            height: 100%;
+        }
+
+        input {
+            width: 200px;
+            height: 20px;
+        }
+    </style>
+</head>
+<body>
+<!-- 账号信息 -->
+<div style="height: auto;" class="easyui-panel" title="账号信息">
+    <!-- 账号信息内容 -->
+    <table id="accountInfoTable" name="accountInfoTable" border="0" style="width: 100%;margin-top: 5px;margin-bottom: 10px">
+        <tr style="height: 30px">
+            <td style="width: 4%;text-align: right">确认号：</td>
+            <td style="width: 4%;"><#if customer.checkingNo?exists>${customer.checkingNo}</#if></td>
+            <td style="width: 4%;text-align: right">姓名：</td>
+            <td style="width: 8%;"><#if customer.firstName?exists>${customer.firstName}</#if></td>
+            <td style="width: 6%;text-align: right">电子邮件：</td>
+            <td style="width: 10%;"><#if customer.email?exists>${customer.email}</#if></td>
+            <td style="width: 4%;text-align: right">密码：</td>
+            <td style="width: 6%;"><#if customer.password?exists>${customer.password}</#if></td>
+            <td style="width: 6%;text-align: right">是否激活：</td>
+            <td style="width: 6%;">
+                <font color="blue">
+                    <#if customer.isActivated==0>注销</#if>
+                    <#if customer.isActivated==1>网页激活</#if>
+                    <#if customer.isActivated==2>短信激活</#if>
+                </font>
+            </td>
+            <td style="width: 6%;text-align: right">是否专业：</td>
+            <td style="width: 6%;"><font color="blue"><#if customer.isProfessional>专业<#else>普通</#if></font></td>
+            <td style="width: 8%;text-align: right">登记时间：</td>
+            <td style="width: 16%;"><#if customer.createdTime?exists>${customer.createdTime}</#if></td>
+        </tr>
+        <tr style="height: 30px">
+            <td style="width: 6%;text-align: right">职位/部门：</td>
+            <td style="width: 4%;"><#if customer.position?exists>${customer.position}</#if></td>
+            <td style="width: 6%;text-align: right">客商来源：</td>
+            <td style="width: 4%;"><#if customer.isMobile?exists && customer.isMobile>手机<#else>网站</#if></td>
+            <td style="width: 8%;text-align: left">最近邮件发送时间：</td>
+            <td style="width: 12%;"><font color="blue"><#if customer.sendEmailDate?exists>${customer.sendEmailDate}</#if></font></td>
+            <td style="width: 6%;text-align: right">邮件数量：</td>
+            <td style="width: 4%;"><#if customer.sendEmailNum?exists>${customer.sendEmailNum}</#if></td>
+            <td style="width: 8%;text-align: left">最近短信发送时间：</td>
+            <td style="width: 12%;"><font color="blue"><#if customer.sendMsgDate?exists>${customer.sendMsgDate}</#if></font></td>
+            <td style="width: 6%;text-align: right">短信数量：</td>
+            <td style="width: 4%;"><#if customer.sendMsgNum?exists>${customer.sendMsgNum}</#if></td>
+            <td style="width: 8%;text-align: right">最后修改时间：</td>
+            <td style="width: 12%;"><#if customer.updateTime?exists>${customer.updateTime}</#if></td>
+            <td></td>
+        </tr>
+    </table>
+</div>
+<!-- 客商基本信息 -->
+<div style="height: auto;" class="easyui-panel" title="客商基本信息">
+    <!-- 客商基本信息内容 -->
+    <#if customer?exists>
+        <table id="customerInfoTable" name="customerInfoTable" class="customerinfo" border="0" style="width: 100%;table-layout：fixed;">
+            <tr style="height: 30px">
+                <td style="width: 4%;text-align: right">国家：</td>
+                <td style="width: 4%;"><#if customer.country?exists>${customer.country}</#if></td>
+                <td style="width: 7%;text-align: right">公司中文名：</td>
+                <td style="width: 16%;"><#if customer.company?exists>${customer.company}</#if></td>
+                <td style="width: 4%;text-align: right">姓名：</td>
+                <td style="width: 8%;"><#if customer.firstName?exists>${customer.firstName}</#if></td>
+                <td style="width: 4%;text-align: right">邮箱：</td>
+                <td style="width: 10%;"><a href="mailto:<#if customer.email?exists>${customer.email}</#if>"><#if customer.email?exists>${customer.email}</#if></a></td>
+                <td style="width: 4%;text-align: right">职位/部门：</td>
+                <td style="width: 8%;"><#if customer.position?exists>${customer.position}</#if></td>
+                <td style="width: 4%;text-align: right">地址：</td>
+                <td style="width: 16%;"><#if customer.address?exists>${customer.address}</#if></td>
+                <td style="width: 4%;text-align: right">城市：</td>
+                <td style="width: 4%;"><#if customer.city?exists>${customer.city}</#if></td>
+            </tr>
+            <tr style="height: 30px">
+                <td style="width: 4%;text-align: right">性别：</td>
+                <td style="width: 4%;"><#if customer.sex?exists>${customer.sex}</#if></td>
+                <td style="width: 4%;text-align: right">网址：</td>
+                <td style="width: 12%;" id="websitehref2"><a id="openWebsite2" href="#"><#if customer.website?exists>${customer.website}</#if></a></td>
+                <td style="width: 4%;text-align: right">电话：</td>
+                <td style="width: 6%;"><#if customer.telephone?exists>${customer.telephone}</#if></td>
+                <td style="width: 4%;text-align: right">手机：</td>
+                <td style="width: 6%;"><#if customer.mobilePhone?exists>${customer.mobilePhone}</#if></td>
+                <td style="width: 4%;text-align: right">传真：</td>
+                <td style="width: 8%;"><#if customer.fax?exists>${customer.fax}</#if></td>
+                <td style="width: 6%;text-align: right">是否专业：</td>
+                <td style="width: 6%;"><font color="blue"><#if customer.isProfessional>专业<#else>普通</#if></font></td>
+                <td style="width: 6%;text-align: right">是否激活：</td>
+                <td style="width: 6%;"><#if customer.isActivated==1>激活<#else>注销</#if></td>
+            </tr>
+        </table>
+    </#if>
+</div>
+<!-- 客商世界石材大会 -->
+<div style="height: auto;" class="easyui-panel" title="VISA信息">
+    <#if customer?exists>
+        <table id="customerVisaInfoTable" name="customerVisaInfoTable" class="customerVisaInfoTable" border="0" style="width: 100%;table-layout：fixed;">
+            <tr style="height: 30px">
+                <td style="width: 80px;text-align: right">姓名：</td>
+                <td style="width: 200px"><#if customer.visa_FullPassportName?exists>${customer.visa_FullPassportName}</#if></td>
+                <td style="width: 80px;text-align: right">性别：</td>
+                <td style="width: 200px"><#if customer.visa_Gender?exists>${customer.visa_Gender}</#if></td>
+                <td style="width: 80px;text-align: right">国藉：</td>
+                <td style="width: 200px"><#if customer.visa_Nationality?exists>${customer.visa_Nationality}</#if></td>
+                <td style="width: 80px;text-align: right">职务：</td>
+                <td style="width: 200px"><#if customer.position?exists>${customer.position}</#if></td>
+            </tr>
+            <tr>
+                <td style="width: 120px;text-align: right">护照ID：</td>
+                <td style="width: 200px"><#if customer.visa_PassportNo?exists>${customer.visa_PassportNo}</#if></td>
+                <td style="width: 120px;text-align: right">出生日期：</td>
+                <td style="width: 200px;"><#if customer.visa_DateOfBirth?exists>${customer.visa_DateOfBirth}</#if></td>
+                <td style="width: 140px;text-align: right">中国使馆：</td>
+                <td style="width: 200px;"><#if customer.visa_ChineseEmbassy?exists>${customer.visa_ChineseEmbassy}</#if></td>
+                <td style="width: 140px;text-align: right">居住酒店：</td>
+                <td style="width: 200px;"><#if customer.visa_Hotel?exists>${customer.visa_Hotel}</#if></td>
+            </tr>
+            <tr>
+                <td style="width: 140px;text-align: right">是否邮寄：</td>
+                <td style="width: 200px;"><#if customer.visa_NeedPost?exists && customer.visa_NeedPost>已经邮寄<#else>未邮寄</#if></td>
+                <td style="width: 140px;text-align: right">是否可用：</td>
+                <td style="width: 200px;"><#if customer.visa_IsDisabled?exists && customer.visa_IsDisabled>可用<#else>不可用</#if></td>
+                <td style="width: 120px;text-align: right">durationBeginTime：</td>
+                <td style="width: 200px;"><#if customer.visa_DurationBeginTime?exists>${customer.visa_DurationBeginTime}</#if></td>
+                <td style="width: 120px;text-align: right">durationEndTime：</td>
+                <td style="width: 200px;"><#if customer.visa_DurationEndTime?exists>${customer.visa_DurationEndTime}</#if></td>
+            </tr>
+            <tr>
+                <td style="width: 120px;text-align: right">户照图片：</td>
+                <td colspan="9" style="width: 92%;text-align: left;word-break:break-all">
+                    <#if customer.visa_PassportPage?exists && customer.visa_PassportPage!=''>
+                        <img src="http://www.stonefair.org.cn/${customer.visa_PassportPage}" id="visa_PassportPage" name="visa_PassportPage" class="img-rounded" width="350" />
+                    <#else>
+                        <img src="" id="visa_PassportPage" name="visa_PassportPage" class="img-rounded" width="300px" height="0px;" />
+                    </#if>
+                </td>
+            </tr>
+            <tr>
+                <td style="width: 120px;text-align: right">营业执照：</td>
+                <td colspan="9" style="width: 92%;text-align: left;word-break:break-all">
+                    <#if customer.visa_BusinessLicense?exists && customer.visa_BusinessLicense!=''>
+                        <img src="http://www.stonefair.org.cn/${customer.visa_BusinessLicense}" id="visa_BusinessLicense" name="visa_BusinessLicense" class="img-rounded" width="350" />
+                    <#else>
+                        <img src="" id="visa_BusinessLicense" name="visa_BusinessLicense" class="img-rounded" width="300px" height="0px;" />
+                    </#if>
+                </td>
+            </tr>
+        </table>
+    </#if>
+</div>
+
+<!-- 客商问卷调查 -->
+<div style="height: auto;" class="easyui-panel" title="客商问卷调查">
+    <!-- 客商问卷调查 -->
+    <#if customer?exists>
+        <table id="customerSurveyTable" name="customerSurveyTable" class="customerSurveyTable" border="0" style="width: 100%;table-layout：fixed;">
+            <tr style="height: 30px">
+                <td style="width: 8%;text-align: right">问卷一：</td>
+                <td style="width: 90%;"><#if customer.survey_Q1?exists && customer.survey_Q1!=''>${customer.survey_Q1}</#if></td>
+            </tr>
+            <tr>
+                <td style="width: 8%;text-align: right">问卷二：</td>
+                <td style="width: 90%;"><#if customer.survey_Q2?exists && customer.survey_Q2!=''>${customer.survey_Q2}</#if></td>
+            </tr>
+            <tr>
+                <td style="width: 8%;text-align: right">问卷三：</td>
+                <td style="width: 90%;"><#if customer.survey_Q3?exists && customer.survey_Q3!=''>${customer.survey_Q3}</#if></td>
+            </tr>
+            <tr>
+                <td style="width: 8%;text-align: right">问卷四：</td>
+                <td style="width: 90%;"><#if customer.survey_Q4?exists && customer.survey_Q4!=''>${customer.survey_Q4}</#if></td>
+            </tr>
+            <tr>
+                <td style="width: 8%;text-align: right">问卷五：</td>
+                <td style="width: 90%;"><#if customer.survey_Q5?exists && customer.survey_Q5!=''>${customer.survey_Q5}</#if></td>
+            </tr>
+            <tr>
+                <td style="width: 8%;text-align: right">邀请邮件：</td>
+                <td style="width: 90%;"><#if customer.survey_InviterEmail?exists && customer.survey_InviterEmail!=''>${customer.survey_InviterEmail}</#if></td>
+            </tr>
+            <tr>
+                <td style="width: 8%;text-align: right">问卷六：</td>
+                <td style="width: 90%;"><#if customer.survey_Q6?exists && customer.survey_Q6!=''>${customer.survey_Q6}</#if></td>
+            </tr>
+            <tr>
+                <td style="width: 8%;text-align: right">问卷七：</td>
+                <td style="width: 90%;"><#if customer.survey_Q7?exists && customer.survey_Q7!=''>${customer.survey_Q7}</#if></td>
+            </tr>
+            <tr>
+                <td style="width: 8%;text-align: right">问卷八：</td>
+                <td style="width: 90%;"><#if customer.survey_Q8?exists && customer.survey_Q8!=''>${customer.survey_Q8}</#if></td>
+            </tr>
+            <tr>
+                <td style="width: 8%;text-align: right">问卷九：</td>
+                <td style="width: 90%;"><#if customer.survey_Q9?exists && customer.survey_Q9!=''>${customer.survey_Q9}</#if></td>
+            </tr>
+            <tr>
+                <td style="width: 8%;text-align: right">问卷十：</td>
+                <td style="width: 90%;"><#if customer.survey_Q10?exists && customer.survey_Q10!=''>${customer.survey_Q10}</#if></td>
+            </tr>
+            <tr style="height: 30px">
+                <td style="width: 8%;text-align: right">邀请人：</td>
+                <td style="width: 90%;"><#if customer.survey_InviterName?exists && customer.survey_InviterName!=''>${customer.survey_InviterName}</#if></td>
+            </tr>
+        </table>
+    </#if>
+</div>
+<!-- 客商世界石材大会 -->
+<div style="height: auto;" class="easyui-panel" title="客商世界石材大会">
+    <#if customer?exists>
+        <table id="customerInfoYearTable" name="customerInfoYearTable" class="customerInfoYearTable" border="0" style="width: 100%;table-layout：fixed;">
+            <tr style="height: 30px">
+                <td style="width: 5%;text-align: left">SWC：</td>
+                <td style="width: 90%;text-align: left"><#if customer.year_WSC?exists>${customer.year_WSC}</#if></td>
+            </tr>
+        </table>
+    </#if>
+</div>
+</body>
+</html>

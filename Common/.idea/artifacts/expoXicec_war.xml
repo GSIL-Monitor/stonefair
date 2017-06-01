@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="expoXicec:war">
+    <output-path>$PROJECT_DIR$/../expoXicec/expoXicec/target</output-path>
+    <root id="archive" name="BoothAudit.war">
+      <element id="artifact" artifact-name="expoXicec:war exploded" />
+    </root>
+  </artifact>
+</component>

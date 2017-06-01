@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<#import "/common/spring.ftl" as spring />
+<html lang="zh-cn">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title><@spring.message "site"/></title>
+
+
+    <#include "/common/common-js.html" />
+    <!-- Custom styles for this template -->
+    <link href="${resource}/bootstrap/b2/css/bootstrap.css" rel="stylesheet">
+    <link href="${resource}/bootstrap/b2/css/docs.css" rel="stylesheet">
+    <script src="${resource}/js/jquery.json-2.4.js"></script>
+    <style type="text/css">
+        .form-signin-heading {
+            border-bottom: solid 3px #e1e1e1;
+            padding-bottom: 10px;
+            position: relative;
+            line-height: 40px;
+            color: #d84c31;
+            font-size: 24px;
+        }
+
+        .rowself {
+            width: 680px;
+            margin: 30px auto;
+            margin-bottom: 50px;
+            border: 1px solid #e1e1e1;
+            -webkit-box-shadow: 0 0 3px #eee, inset 0 0 3px #fff;
+            box-shadow: 0 0 3px #eee, inset 0 0 3px #fff;
+            background: #fbfbfb;
+            padding: 20px;
+            margin-top: 0px;
+        }
+        body {
+            padding-top: 0px;
+            padding-bottom: 40px;
+        }
+
+        .sidebar-nav {
+            padding: 9px 0;
+        }
+
+        .bs-docs-sidenav {
+            min-width: 180px;
+        }
+
+        .nav-list > .active > a,
+        .nav-list > .active > a:hover,
+        .nav-list > .active > a:focus {
+            color: #ffffff;
+            text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.2);
+            background-color: #f1b426;
+        }
+
+        a:hover, a:focus {
+            color: #f1b426;
+            text-decoration: underline;
+        }
+        a:hover, a:active {
+            outline: 0;
+        }
+        a {
+            color: #f1b426;
+            text-decoration: none;
+        }
+
+        @media (max-width: 980px) {
+            /* Enable use of floated navbar text */
+            .navbar-text.pull-right {
+                float: none;
+                padding-left: 5px;
+                padding-right: 5px;
+            }
+        }
+    </style>
+</head>
+<!-- Bootstrap core CSS -->
+
+<body>
+<#include "/user/header.html" />
+<!-- /.navbar -->
+<#assign exhibitor_data_end_html = "${tExhibitorTime.company_Info_Data_End_Html}">
+<div style="width: 100%">
+    <div class="row-fluid" style="width: 962px;margin: 0px auto;">
+        <#include "/user/left.html" />
+        <div style="width: 639px;float: left;margin-left: 31px;background-color: #ffffff;padding: 20px;">
+            <#include "/common/message.ftl" />
+            <form class="form-horizontal" id="infoform" action="${base}/user/saveHighlight" method="post" role="form"
+                  enctype="multipart/form-data">
+                <div style="color: #f1b426;font-size: 16px;border-bottom: 1px #dbdbdb solid;line-height: 32px;font-weight: bolder">${tExhibitorTime.stone_fair_end_year}&nbsp;-&nbsp;${tExhibitorTime.stone_fair_begin_year}<@spring.message "info.update.exhibition.company_hignlight"/></div>
+                <!--<#if .now?date gt exhibitor_data_end_html?date>
+                    <div class="alert alert-block">已截止</div>
+                <#else>
+                    <#if rc.locale=="zh_CN">
+                        <div class="alert alert-block"> 贵司在${tExhibitorTime.stone_fair_end_year}&nbsp;-&nbsp;${tExhibitorTime.stone_fair_begin_year}<@spring.message "info.update.exhibition.company_hignlight"/>年度如有开发新的石材产品、新的研发技术、新的设计理念、新的发展方向，欢迎提交，一经采纳，组委会将为贵司进行官方宣传。</div>
+                    <#else>
+                        <div class="alert alert-block">If your company have any New Products, New Technology, New Design Concept&#45;&#45;Post at here ASAP to win a chance of official promotion!</div>
+                    </#if>
+                </#if>-->
+                <#if rc.locale=="zh_CN">
+                    <div class="alert alert-block"> 贵司在${tExhibitorTime.stone_fair_end_year}&nbsp;-&nbsp;${tExhibitorTime.stone_fair_begin_year}<@spring.message "info.update.exhibition.company_hignlight"/>，如有开发新的石材产品、新的研发技术、新的设计理念、新的发展方向，欢迎提交，一经采纳，组委会将为贵司进行官方宣传。</div>
+                    <#else>
+                        <div class="alert alert-block">If your company have any New Products, New Technology, New Design Concept--Post at here ASAP to win a chance of official promotion!</div>
+                </#if>
+                <div class="row-fluid" style="margin:20px auto auto auto;">
+                    <div class="control-group">
+                        <label for="company_hignlight" class="control-label"><!--<@spring.message"info.update.exhibition.company_hignlight_info"/>-->
+                            <font color="#dc143c">
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                <#if rc.locale=="zh_CN">
+                                    (限200字)
+                                <#else>
+                                    (Less than 200 words)
+                                </#if></font></label>
+                        <div class="controls">
+                            <textarea style="height:180px;width:370px;resize: none;" catValidate="required:false"
+                                      name="company_hignlight" class="form-control" id="company_hignlight">${updateInfo.company_hignlight!''}</textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <center>
+                    <button type="button" style="margin-top: 10px;margin-left: 10px" id="saveButton" name="saveButton" class="btn btn-warning"><@spring.message "info.update.exhibition.save"/></button>
+                    <!--<#if exhibitor_data_end_html?date gt .now?date>
+                        <button type="button" style="margin-top: 10px;margin-left: 10px" id="saveButton" name="saveButton" class="btn btn-warning"><@spring.message "info.update.exhibition.save"/></button>
+                    </#if>-->
+                </center>
+                <input name="einfoid" value="${updateInfo.einfoid!""}" type="hidden">
+                <input name="eid" value="${updateInfo.eid!""}" type="hidden">
+                <input name="logo" value="${updateInfo.logo!""}" type="hidden">
+                <input name="classjson" id="classjson" type="hidden">
+                <input name="phone" type="hidden" />
+                <input name="fax" type="hidden" />
+            </form>
+        </div>
+        <!--/row-->
+    </div>
+    <!--/span-->
+
+</div>
+<!--/row-->
+
+<hr>
+<#include "/footer.html" />
+</div>
+
+<script>
+	function testreg(str){
+		var arr = str.match(/.\b./g);
+		if(arr != null) return arr.length;
+		else return 0;
+	}
+	function countCharZh(textareaName,spanName){
+		if(document.getElementById(textareaName).value.length > 200){
+			document.getElementById(spanName).innerHTML = "您已经输入超过200个字了";
+			document.getElementById(textareaName).value = document.getElementById(textareaName).value.substring(0, 200);
+			$("#counterZh").css("color","#e9322d");
+			$("#inputMark").css("border-color","#e9322d");
+		}else{
+			document.getElementById(spanName).innerHTML = "您还可以输入" + (200 - document.getElementById(textareaName).value.length) + "字";
+			$("#counterZh").css("color","#000");
+			$("#inputMark").css("border-color","rgba(82, 168, 236, 0.8)");
+		}
+	}
+	function countCharEn(textareaName,spanName){
+		var str = document.getElementById(textareaName).value;
+		if(testreg(str) > 200){
+			document.getElementById(spanName).innerHTML = "您已经输入超过200个字了";
+			$("#counterEn").css("color","#e9322d");
+			$("#inputEMark").css("border-color","#e9322d");
+		}else{
+			document.getElementById(spanName).innerHTML = "您还可以输入" + (200 - testreg(str)) + "字";
+			$("#counterEn").css("color","#000");
+			$("#inputEMark").css("border-color","rgba(82, 168, 236, 0.8)");
+		}
+	}
+
+    $(document).ready(function () {
+        $("#leftHighlight").addClass("lcurrent");
+        //save event
+        $("[name='saveButton']").click(function () {
+            function needValidate(o){
+                var catValidate = $("#infoform [name='"+o.name+"']").attr("catValidate");
+                return catValidate!=undefined&&catValidate.indexOf("required:true")!=-1;
+            }
+            var formData = $("#infoform").serializeArray();
+            for(var i=0;i<formData.length;i++){
+                if(formData[i].name=='company_hignlight'){
+					if(formData[i].value.length>200){
+						alert("公司亮点简介不能超过200个字");
+						return;
+					}
+				}
+                if(formData[i].value==''&&needValidate(formData[i])){
+                    alert($("#infoform [name='"+formData[i].name+"']").attr("placeholder")+" 不能为空！");
+                    return;
+                }
+            }
+            $("#infoform").submit();
+        });
+    });
+
+</script>
+<script src="${resource}/bootstrap/b2/js/bootstrap.js"></script>
+</body>
+</html>

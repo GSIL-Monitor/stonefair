@@ -1,0 +1,640 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>金泓信展商管理后台</title>
+    <link rel="stylesheet" type="text/css" href="${base}/resource/easyui/themes/metro-blue/easyui.css">
+    <link rel="stylesheet" type="text/css" href="${base}/resource/easyui/themes/icon.css">
+    <script type="text/javascript" src="${base}/resource/jquery.min.js"></script>
+    <script type="text/javascript" src="${base}/resource/easyui/jquery.easyui.min.js"></script>
+    <script type="text/javascript" src="${base}/resource/easyui/empty-view.js"></script>
+    <script type="text/javascript" src="${base}/resource/ajaxfileupload.js"></script>
+    <script type="text/javascript" src="${base}/resource/common.js"></script>
+    <script type="text/javascript" src="${base}/resource/easyui/easyui-validate.js"></script>
+    <style>
+        body {
+            margin: 0px;
+            padding: 0px;
+            width: 100%;
+            height: 100%;
+        }
+
+        input {
+            width: 200px;
+            height: 20px;
+        }
+    </style>
+</head>
+<body>
+<!-- 账号信息 -->
+<div style="height: auto;" class="easyui-panel" title="账号信息">
+    <!-- 账号信息按钮:修改账号信息  发送邮件  发送短信  设置是否专业客商-->
+    <table id="customerinfo" name="customerinfo" style="width: 90%;margin-left: 10px;margin-top: 5px">
+        <tr style="height: 30px;">
+            <td style="width: 400px" colspan="4">
+                <a id="modifyBaseInfo" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-edit'">修改账号信息</a>
+                <a id="sendEmail" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-ok'" style="margin-left: 10px" >发送邮件</a>
+                <a id="sendMsg" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-save'">发送短信</a>
+                <a id="setProfessional" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-redo'"><#if customer.isProfessional?exists && customer.isProfessional==1>设为普通客商<#else>设为专业客商</#if></a>
+                <a id="setActiveOrUnactive" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-redo'"><#if customer.isActivated?exists && customer.isActivated==1>注销<#else>激活</#if></a>
+            </td>
+        </tr>
+    </table>
+    <!-- 账号信息内容 -->
+    <table id="accountInfoTable" name="accountInfoTable" border="0" style="width: 100%;margin-top: 5px;margin-bottom: 10px">
+        <tr style="height: 30px">
+            <td style="width: 4%;text-align: right">确认号：</td>
+            <td style="width: 4%;"><#if customer.checkingNo?exists>${customer.checkingNo}</#if></td>
+            <td style="width: 4%;text-align: right">姓名：</td>
+            <td style="width: 8%;"><#if customer.firstName?exists>${customer.firstName}</#if></td>
+            <td style="width: 6%;text-align: right">电子邮件：</td>
+            <td style="width: 10%;"><#if customer.email?exists>${customer.email}</#if></td>
+            <td style="width: 4%;text-align: right">密码：</td>
+            <td style="width: 6%;"><#if customer.password?exists>${customer.password}</#if></td>
+            <td style="width: 6%;text-align: right">是否激活：</td>
+            <td style="width: 6%;">
+                <font color="blue">
+                    <#if customer.isActivated==0>注销</#if>
+                    <#if customer.isActivated==1>网页激活</#if>
+                    <#if customer.isActivated==2>短信激活</#if>
+                </font>
+            </td>
+            <td style="width: 6%;text-align: right">是否专业：</td>
+            <td style="width: 6%;"><font color="blue"><#if customer.isProfessional==1>专业<#else>普通</#if></font></td>
+            <td style="width: 8%;text-align: right">登记时间：</td>
+            <td style="width: 16%;"><#if customer.createdTime?exists>${customer.createdTime}</#if></td>
+        </tr>
+        <tr style="height: 30px">
+            <td style="width: 6%;text-align: right">职位/部门：</td>
+            <td style="width: 4%;"><#if customer.position?exists>${customer.position}</#if></td>
+            <td style="width: 6%;text-align: right">客商来源：</td>
+            <td style="width: 4%;"><#if customer.isMobile?exists && customer.isMobile>手机<#else>网站</#if></td>
+            <td style="width: 8%;text-align: left">最近邮件发送时间：</td>
+            <td style="width: 12%;"><font color="blue"><#if customer.sendEmailDate?exists>${customer.sendEmailDate}</#if></font></td>
+            <td style="width: 6%;text-align: right">邮件数量：</td>
+            <td style="width: 4%;"><#if customer.sendEmailNum?exists>${customer.sendEmailNum}</#if></td>
+            <td style="width: 8%;text-align: left">最近短信发送时间：</td>
+            <td style="width: 12%;"><font color="blue"><#if customer.sendMsgDate?exists>${customer.sendMsgDate}</#if></font></td>
+            <td style="width: 6%;text-align: right">短信数量：</td>
+            <td style="width: 4%;"><#if customer.sendMsgNum?exists>${customer.sendMsgNum}</#if></td>
+            <td style="width: 8%;text-align: right">最后修改时间：</td>
+            <td style="width: 12%;"><#if customer.updateTime?exists>${customer.updateTime}</#if></td>
+            <td></td>
+        </tr>
+    </table>
+</div>
+<!-- 客商基本信息 -->
+<div style="height: auto;" class="easyui-panel" title="客商基本信息">
+	<!-- 客商基本信息按钮:管理客商基本信息 -->
+    <table class="customerinfo" border="0" style="width: 90%;margin-left: 10px;margin-top: 5px">
+        <tr style="height: 30px;">
+            <td style="width: 300px" colspan="2">
+                <a id="manageCustomerInfo" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-edit'">管理客商基本信息</a>
+            </td>
+        </tr>
+    </table>
+    <!-- 客商基本信息内容 -->
+    <#if customer?exists>
+        <table id="customerInfoTable" name="customerInfoTable" class="customerinfo" border="0" style="width: 100%;table-layout：fixed;">
+            <tr style="height: 30px">
+                <td style="width: 4%;text-align: right">国家：</td>
+                <td style="width: 4%;"><#if customer.countryValue?exists>${customer.countryValue}</#if></td>
+                <td style="width: 7%;text-align: right">公司中文名：</td>
+                <td style="width: 16%;"><#if customer.company?exists>${customer.company}</#if></td>
+                <td style="width: 4%;text-align: right">姓名：</td>
+                <td style="width: 8%;"><#if customer.firstName?exists>${customer.firstName}</#if></td>
+                <td style="width: 4%;text-align: right">邮箱：</td>
+                <td style="width: 10%;"><a href="mailto:<#if customer.email?exists>${customer.email}</#if>"><#if customer.email?exists>${customer.email}</#if></a></td>
+                <td style="width: 4%;text-align: right">职位/部门：</td>
+                <td style="width: 8%;"><#if customer.position?exists>${customer.position}</#if></td>
+                <td style="width: 4%;text-align: right">地址：</td>
+                <td style="width: 16%;"><#if customer.address?exists>${customer.address}</#if></td>
+                <td style="width: 4%;text-align: right">城市：</td>
+                <td style="width: 4%;"><#if customer.city?exists>${customer.city}</#if></td>
+            </tr>
+            <tr style="height: 30px">
+                <td style="width: 4%;text-align: right">性别：</td>
+                <td style="width: 4%;"><#if customer.sex?exists>${customer.sex}</#if></td>
+                <td style="width: 4%;text-align: right">网址：</td>
+                <td style="width: 12%;" id="websitehref2"><a id="openWebsite2" href="#"><#if customer.website?exists>${customer.website}</#if></a></td>
+                <td style="width: 4%;text-align: right">电话：</td>
+                <td style="width: 6%;"><#if customer.telephone?exists>${customer.telephone}</#if></td>
+                <td style="width: 4%;text-align: right">手机：</td>
+                <td style="width: 6%;"><#if customer.mobilePhone?exists>${customer.mobilePhone}</#if></td>
+                <td style="width: 4%;text-align: right">传真：</td>
+                <td style="width: 8%;"><#if customer.fax?exists>${customer.fax}</#if></td>
+                <td style="width: 6%;text-align: right">是否专业：</td>
+                <td style="width: 6%;"><font color="blue"><#if customer.isProfessional==1>专业<#else>普通</#if></font></td>
+                <td style="width: 6%;text-align: right">是否激活：</td>
+                <td style="width: 6%;"><#if customer.isActivated==1>激活<#else>注销</#if></td>
+            </tr>
+        </table>
+    </#if>
+</div>
+<!-- 客商问卷调查 -->
+<div style="height: auto;" class="easyui-panel" title="客商问卷调查">
+    <!-- 客商问卷调查 -->
+    <#if customerSurvey?exists>
+        <table id="customerSurveyTable" name="customerSurveyTable" class="customerSurveyTable" border="0" style="width: 100%;table-layout：fixed;">
+            <tr style="height: 30px">
+                <td style="width: 6%;text-align: right">问卷一：</td>
+                <td style="width: 10%;"><#if customerSurvey.q1?exists>${customerSurvey.q1}</#if></td>
+                <td style="width: 6%;text-align: right">问卷二：</td>
+                <td style="width: 12%;"><#if customerSurvey.q2?exists>${customerSurvey.q2}</#if></a></td>
+                <td style="width: 5%;text-align: right">问卷三：</td>
+                <td style="width: 3%;"><#if customerSurvey.q3?exists>${customerSurvey.q3}</#if></td>
+                <td style="width: 5%;text-align: right">问卷四：</td>
+                <td style="width: 8%;"><#if customerSurvey.q4?exists>${customerSurvey.q4}</#if></td>
+                <td style="width: 3%;text-align: right">问卷五：</td>
+                <td style="width: 6%;"><#if customerSurvey.q5?exists>${customerSurvey.q5}</#if></td>
+                <td style="width: 6%;text-align: right">邀请邮件：</td>
+                <td style="width: 6%;"><#if customerSurvey.inviterEmail?exists>${customerSurvey.inviterEmail}</#if></td>
+            </tr>
+            <tr style="height: 30px">
+                <td style="width: 6%;text-align: right">问卷六：</td>
+                <td style="width: 10%;"><#if customerSurvey.q6?exists>${customerSurvey.q6}</#if></td>
+                <td style="width: 6%;text-align: right">问卷七：</td>
+                <td style="width: 12%;"><#if customerSurvey.q7?exists>${customerSurvey.q7}</#if></td>
+                <td style="width: 8%;text-align: right">问卷八：</td>
+                <td style="width: 10%;"><#if customerSurvey.q8?exists>${customerSurvey.q8}</#if></td>
+                <td style="width: 10%;text-align: right">问卷九：</td>
+                <td style="width: 6%;"><#if customerSurvey.q9?exists>${customerSurvey.q9}</#if></td>
+                <td style="width: 9%;text-align: right">问卷十：</td>
+                <td style="width: 6%;"><#if customerSurvey.q10?exists>${customerSurvey.q10}</#if></td>
+                <td style="width: 9%;text-align: right">邀请人：</td>
+                <td style="width: 6%;"><#if customerSurvey.inviterName?exists>${customerSurvey.inviterName}</#if></td>
+            </tr>
+        </table>
+    </#if>
+</div>
+<!-- 客商世界石材大会 -->
+<div style="height: auto;" class="easyui-panel" title="客商世界石材大会">
+    <!-- 客商世界石材大会 -->
+    <#if customerInfoYear?exists>
+        <table id="customerInfoYearTable" name="customerInfoYearTable" class="customerInfoYearTable" border="0" style="width: 100%;table-layout：fixed;">
+            <tr style="height: 30px">
+                <td style="width: 5%;text-align: left">SWC：</td>
+                <td style="width: 90%;text-align: left"><#if customerInfoYear.wSC?exists>${customerInfoYear.wSC}</#if></td>
+            </tr>
+        </table>
+    </#if>
+</div>
+<!-- 修改账号信息表单 -->
+<div id="customerInfoManageDlg" data-options="iconCls:'icon-edit',modal:true">
+    <form id="accountInfoManageForm"  name="accountInfoManageForm">
+        <table style="width: 320px;margin: 20px auto">
+            <tr>
+                <td style="width: 90px;text-align: right">用户名：</td>
+                <td><input class="easyui-validatebox" type="text" value="${(customer.firstName)!''}" name="username"></td>
+            </tr>
+            <tr>
+                <td style="width: 90px;text-align: right">密码：</td>
+                <td><input class="easyui-validatebox" type="password" value="${(customer.password)!''}" name="password"></td>
+            </tr>
+            <tr>
+                <td style="width: 90px;text-align: right">公司名称：</td>
+                <td><input class="easyui-validatebox" type="text" value="${(customer.company)!''}" name="company"></td>
+            </tr>
+            <tr>
+                <td style="width: 90px;text-align: right">公司地址：</td>
+                <td><input class="easyui-validatebox" type="text" value="${(customer.address)!''}" name="address"></td>
+            </tr>
+            <tr>
+                <td style="width: 90px;text-align: right">电子邮件：</td>
+                <td><input class="easyui-validatebox" type="text" value="${(customer.email)!''}" name="email"></td>
+            </tr>
+            <tr>
+                <td style="width: 90px;text-align: right">手机：</td>
+                <td><input class="easyui-validatebox" type="text" value="${(customer.mobilePhone)!''}" name="mobilePhone"></td>
+            </tr>
+            <tr>
+                <td style="width: 90px;text-align: right">职务/部门：</td>
+                <td><input class="easyui-validatebox" type="text" value="${(customer.position)!''}" name="position"></td>
+            </tr>
+            <tr>
+                <td style="width: 90px;text-align: right">传真：</td>
+                <td><input class="easyui-validatebox" type="text" value="${(customer.fax)!''}" name="fax"></td>
+            </tr>
+            <tr>
+                <td style="width: 90px;text-align: right">公司网址：</td>
+                <td><input class="easyui-validatebox" type="text" value="${(customer.website)!''}" name="website"></td>
+            </tr>
+            <input type="hidden" value="${id}" name="id">
+        </table>
+    </form>
+</div>
+
+<!-- 邮件选择表单 -->
+<div id="customerSelectEmailTypeDlg" data-options="iconCls:'icon-edit',modal:true">
+    <form id="customerSelectEmailTypeForm"  name="customerSelectEmailTypeForm">
+        <table style="width: 250px;margin: 20px auto">
+            <tr>
+                <td style="text-align: center"><a id="sendNormalMsg" href="#" class="easyui-linkbutton" style="margin-left: 10px" data-options="iconCls:'icon-save'">给普通客商发<font color="#dc143c">信息完善</font>邮件</a></td>
+            </tr>
+            <tr></tr><tr></tr><tr></tr>
+            <tr>
+                <td style="text-align: center"><a id="sendProfessionalMsg" href="#" class="easyui-linkbutton" style="margin-left: 10px" data-options="iconCls:'icon-save'">给专业客商发<font color="#006400">邀请参加</font>邮件</a></td>
+            </tr>
+            <input type="hidden" value="${id}" name="id">
+            <input type="hidden" value="${customer.isProfessional}" name="isNormalOrProfessional">
+        </table>
+    </form>
+</div>
+
+<script>
+var country = [];
+var province = [];
+var checkedProducts = [];
+var checkedJoiners = [];
+var checkedContacts = [];
+var isNormalOrProfessional;
+
+/********************************************************自定义函数开始****************************************************************/
+function country_change(countryId){
+	$.ajax({
+		type:"POST",
+		dataType:"json",
+		url:"${base}/user/queryProvinceByCountryId",
+		data:{ 'countryId': countryId },
+		success : function(result) {
+			if(result){
+				$("#province").html('');
+				document.getElementById('province').disabled=false;
+   		 		$("#province").append('<option value="">请选择</option>');
+   		 		for(var i=0,a;a=province[i++];){
+   		 			$("#province").append('<option value="'+a.id+'">'+a.chineseName+'</option>');
+   		 		}
+			}
+		},
+		error : function(result) {
+			$("#province").html('');
+			document.getElementById('province').disabled=true;
+		}
+	});
+}
+
+function refreshAccountInfo(){
+    var tabRow = accountInfoTable.rows;
+    var tabCell0 = tabRow[0].cells;
+    tabCell0[1].innerText = document.accountInfoManageForm.username.value;
+    tabCell0[2].innerText = document.accountInfoManageForm.email.value;
+    tabCell0[3].innerText = document.accountInfoManageForm.password.value;
+    tabCell0[5].innerText = document.accountInfoManageForm.company.value;
+    tabCell0[7].innerText = document.accountInfoManageForm.position.value;
+    var tabCell1 = tabRow[1].cells;
+    tabCell1[3].innerText = document.accountInfoManageForm.address.value;
+    tabCell1[5].innerText = document.accountInfoManageForm.mobilePhone.value;
+    tabCell1[7].innerText = document.accountInfoManageForm.website.value;
+    tabCell1[11].innerText = document.accountInfoManageForm.fax.value;
+    window.location.href=window.location.href;
+}
+
+$(document).ready(function () {
+	//加载国家列表
+	$.ajax({
+		type:"POST",
+		dataType:"json",
+		url:"${base}/user/queryAllCountry",
+		success : function(result) {
+			if(result){
+				country = result;
+			}
+		}
+	});
+	//加载省份列表
+	$.ajax({
+		type:"POST",
+		dataType:"json",
+		url:"${base}/user/queryAllProvince",
+		success : function(result) {
+			if(result){
+				province = result;
+			}
+		}
+	});
+
+    // 管理客商账号信息弹出框
+    $('#customerInfoManageDlg').dialog({
+        title: '管理客商账号信息',
+        width: 350,
+        height: 430,
+        closed: true,
+        cache: false,
+        modal: true,
+        buttons: [
+            {
+                text: '确认修改',
+                handler: function () {
+                    if ($("#accountInfoManageForm").form("validate")) {
+                        $.ajax({
+                            url: "${base}/user/modifyCustomerInfo",
+                            type: "post",
+                            dataType: "json",
+                            data: $("#accountInfoManageForm").serializeJson(),
+                            success: function (data) {
+                                if (data.resultCode == 0) {
+                                    $("#customerInfoManageDlg").dialog("close");
+                                    refreshAccountInfo();
+                                    $.messager.show({
+                                        title: '成功',
+                                        msg: '客商账号修改成功',
+                                        timeout: 5000,
+                                        showType: 'slide'
+                                    });
+                                } else if (data.resultCode == 3) {
+                                    $.messager.alert('错误', data.description);
+                                } else if (data.resultCode == 2) {
+                                    $.messager.alert('错误', data.description);
+                                } else {
+                                    $.messager.alert('错误', '系统错误');
+                                }
+                            }
+                        });
+                    }
+                }
+            },
+            {
+                text: '取消',
+                handler: function () {
+                    $("#customerInfoManageDlg").dialog("close")
+                }
+            }
+        ]
+    });
+
+    //邮件选择框
+    $('#customerSelectEmailTypeDlg').dialog({
+        title: '选择邮件种类',
+        width: 300,
+        height: 200,
+        closed: true,
+        cache: false,
+        modal: true,
+        buttons: [
+            {
+                text: '取消',
+                handler: function () {
+                    $("#customerSelectEmailTypeDlg").dialog("close");
+                }
+            }
+        ]
+    });
+
+    //设置专业或非专业客商
+    $("#setProfessional").click(function () {
+        $.messager.confirm('确认修改','你确定修改客商属性吗?',function(r){
+            if (r){
+                $.ajax({
+                    url: "${base}/user/modifyCustomerProfessional",
+                    type: "post",
+                    dataType: "json",
+                    data: {"id": ${id}},
+                    success: function (data) {
+                        if (data.resultCode == 0) {
+                            $.messager.show({
+                                title: '成功',
+                                msg: '客商属性修改成功',
+                                timeout: 5000,
+                                showType: 'slide'
+                            });
+                            alert('客商属性修改成功');
+                            window.location.href = window.location.href;
+                        } else if (data.resultCode == 2) {
+                            $.messager.alert('错误', data.description);
+                        } else {
+                            $.messager.alert('错误', '系统错误');
+                        }
+                    }
+                });
+            }
+        });
+    });
+
+    //激活或注销客商信息
+    $("#setActiveOrUnactive").click(function () {
+        $.messager.confirm('确认修改','你确定修改客商属性吗?',function(r){
+            if (r){
+                $.ajax({
+                    url: "${base}/user/setCustomerActiveOrUnactive",
+                    type: "post",
+                    dataType: "json",
+                    data: {"id": ${id}},
+                    success: function (data) {
+                        if (data.resultCode == 0) {
+                            $.messager.show({
+                                title: '成功',
+                                msg: '客商属性修改成功',
+                                timeout: 5000,
+                                showType: 'slide'
+                            });
+                            alert('客商属性修改成功');
+                            window.location.href=window.location.href;
+                        } else if (data.resultCode == 2) {
+                            $.messager.alert('错误', data.description);
+                        } else {
+                            $.messager.alert('错误', '系统错误');
+                        }
+                    }
+                });
+            }
+        });
+    });
+
+    $("#openWebsite1").click(function () {
+        var href = document.getElementById("websitehref1").innerText;
+        if(href.indexOf("http://") >= 0 ){
+            window.open(href);
+        }else {
+            href = "http://" + href;
+            window.open(href);
+        }
+    });
+
+    $("#openWebsite2").click(function () {
+        var href = document.getElementById("websitehref2").innerText;
+        if(href.indexOf("http://") >= 0 ){
+            window.open(href);
+        }else {
+            href = "http://" + href;
+            window.open(href);
+        }
+    });
+
+    $("#sendNormalMsg").click(function () {
+        if(${customer.isProfessional} == 1) {
+            $.messager.show({
+                title: '提示信息',
+                msg: '请选择专业客商邮件发送',
+                timeout: 3000,
+                showType: 'slide'
+            });
+            return;
+        }
+        $("#customerSelectEmailTypeDlg").dialog("close");
+        $.messager.confirm('确认发送','你确定要给普通客商发邮件吗?',function(r){
+            if (r){
+                $.ajax({
+                    url: "${base}/user/emailSendEmailFailureStoneCustomers",
+                    type: "post",
+                    dataType: "json",
+                    data: {"cids": ${id}, "deleteEmailFlag": 1},
+                    beforeSend:function(XMLHttpRequest){
+                        $.messager.show({
+                            title: '处理中...',
+                            msg: '正在发送邮件，请稍等...',
+                            timeout: 3000,
+                            showType: 'slide'
+                        });
+                    },
+                    success: function (data) {
+                        if (data.resultCode == 0) {
+                            $.messager.show({
+                                title: '成功',
+                                msg: '给普通客商发送邮件成功',
+                                timeout: 5000,
+                                showType: 'slide'
+                            });
+                            alert('给普通客商发送邮件成功');
+                            window.location.href=window.location.href;
+                        } else if (data.resultCode == 2) {
+                            $.messager.alert('错误', data.description);
+                        } else {
+                            $.messager.alert('错误', '系统错误');
+                        }
+                    }
+                });
+            }
+        });
+    });
+
+    $("#sendProfessionalMsg").click(function () {
+        if(${customer.isProfessional} != 1) {
+            $.messager.show({
+                title: '提示信息',
+                msg: '请选择普通客商邮件发送',
+                timeout: 3000,
+                showType: 'slide'
+            });
+            return;
+        }
+        $("#customerSelectEmailTypeDlg").dialog("close");
+        $.messager.confirm('确认发送','你确定要给专业客商发邮件吗?',function(r){
+            if (r){
+                $.ajax({
+                    url: "${base}/user/emailSendEmailFailureStoneCustomers",
+                    type: "post",
+                    dataType: "json",
+                    data: {"cids": ${id}, "deleteEmailFlag": 1},
+                    beforeSend:function(XMLHttpRequest){
+                        $.messager.show({
+                            title: '处理中...',
+                            msg: '正在发送邮件，请稍等...',
+                            timeout: 3000,
+                            showType: 'slide'
+                        });
+                    },
+                    success: function (data) {
+                        if (data.resultCode == 0) {
+                            $.messager.show({
+                                title: '成功',
+                                msg: '给专业客商发送邮件成功',
+                                timeout: 5000,
+                                showType: 'slide'
+                            });
+                            alert('给专业客商发送邮件成功');
+                            window.location.href=window.location.href;
+                        } else if (data.resultCode == 2) {
+                            $.messager.alert('错误', data.description);
+                        } else {
+                            $.messager.alert('错误', '系统错误');
+                        }
+                    }
+                });
+            }
+        });
+    });
+
+    //发送邮件
+    $("#sendEmail").click(function () {
+        $("#customerSelectEmailTypeDlg").dialog("open");
+    });
+
+    //发送短信
+    $("#sendMsg").click(function () {
+        $.messager.confirm('确认发送','你确定要给客商发短信吗?',function(r){
+            var value = 0;
+            if (${customer.isActivated} == 1) {
+                value = 1;
+            }
+            if (${customer.isActivated} == 0){
+                value = 2;
+            }
+            if (${customer.isActivated} == 2){
+                value = 1;
+            }
+            if (r){
+                $.ajax({
+                    url: "${base}/user/msgAllInlandStoneCustomers",
+                    type: "post",
+                    dataType: "json",
+                    data: {"cids": ${id},"type":value},
+                    beforeSend:function(XMLHttpRequest){
+                        $.messager.show({
+                            title: '处理中...',
+                            msg: '正在发送短信，请稍等...',
+                            timeout: 3000,
+                            showType: 'slide'
+                        });
+                    },
+                    success: function (data) {
+                        if (data.resultCode == 0) {
+                            $.messager.show({
+                                title: '成功',
+                                msg: '给客商发送短信成功',
+                                timeout: 5000,
+                                showType: 'slide'
+                            });
+                            alert('给客商发送短信成功');
+                            window.location.href=window.location.href;
+                        } else if (data.resultCode == 2) {
+                            $.messager.alert('错误', data.description);
+                        } else {
+                            $.messager.alert('错误', '系统错误');
+                        }
+                    }
+                });
+            }
+        });
+    });
+
+    //管理客商基本信息
+    $("#manageCustomerInfo").click(function(){
+        $("#customerInfoManageDlg").dialog("open");
+    });
+
+    //修改账号信息  按钮事件
+    $("#modifyBaseInfo").click(function () {
+    	<#if customer.country?exists>
+	    	$("#country").html('');
+			$("#country").append('<option value="">请选择</option>');
+			for(var i=0,a;a=country[i++];){
+				if(${customer.country} == a.id){
+					$("#country").append('<option value="'+a.id+'" selected="selected">'+a.countryValue+a.chineseName+'</option>');
+				}else{
+					$("#country").append('<option value="'+a.id+'">'+a.countryValue+a.chineseName+'</option>');
+				}
+				
+			}
+		<#else>
+	    	$("#country").html('');
+			$("#country").append('<option value="">请选择</option>');
+			for(var i=0,a;a=country[i++];){
+				$("#country").append('<option value="'+a.id+'">'+a.countryValue+a.chineseName+'</option>');
+			}
+		</#if>
+        $("#customerInfoManageDlg").dialog("open");
+    });
+});
+</script>
+</body>
+</html>

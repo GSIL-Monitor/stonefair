@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="buddha" />
+        <module name="buddha-manager" />
+        <module name="common" />
+        <module name="expoXicec" />
+        <module name="idcardxicec" />
+        <module name="qrcodescan" />
+        <module name="qrcodescan (1)" />
+        <module name="stone" />
+        <module name="stone-manager" />
+        <module name="tea" />
+        <module name="tea-manager" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="buddha" target="1.6" />
+      <module name="buddha-app" target="1.6" />
+      <module name="buddha-manager" target="1.6" />
+      <module name="common" target="1.6" />
+      <module name="expoXicec" target="1.6" />
+      <module name="FileManager" target="1.5" />
+      <module name="FileManagerMySQL" target="1.5" />
+      <module name="idcardxicec" target="1.6" />
+      <module name="qrcodescan" target="1.6" />
+      <module name="qrcodescan (1)" target="1.6" />
+      <module name="stone" target="1.6" />
+      <module name="stone-manager" target="1.6" />
+      <module name="tea" target="1.6" />
+      <module name="tea-manager" target="1.6" />
+    </bytecodeTargetLevel>
+  </component>
+</project>

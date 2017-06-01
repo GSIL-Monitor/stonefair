@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>金泓信展商管理后台</title>
+    <link rel="stylesheet" type="text/css" href="${base}/resource/easyui/themes/metro-blue/easyui.css">
+    <link rel="stylesheet" type="text/css" href="${base}/resource/easyui/themes/icon.css">
+    <script type="text/javascript" src="${base}/resource/jquery.min.js"></script>
+    <script type="text/javascript" src="${base}/resource/easyui/jquery.easyui.min.js"></script>
+    <script type="text/javascript" src="${base}/resource/ajaxfileupload.js"></script>
+    <script type="text/javascript" src="${base}/resource/common.js"></script>
+    <script type="text/javascript" src="${base}/resource/easyui/easyui-validate.js"></script>
+    <style>
+        body {
+            margin: 0px;
+            padding: 0px;
+            width: 100%;
+            height: 100%;
+        }
+
+        input {
+            width: 200px;
+            height: 20px;
+        }
+    </style>
+</head>
+<body>
+<!-- visa信息 -->
+<div style="height: auto;" class="easyui-panel" title="visa信息">
+    <table  id="visaInfoTable"  name="visaInfoTable" style="width: 90%;margin-left: 10px;margin-top: 5px;margin-bottom: 10px">
+        <tr style="height: 30px">
+            <td style="width: auto;text-align: right">姓名：</td>
+            <td style="width: 200px"><#if visaInfo.fullPassportName?exists>${visaInfo.fullPassportName}</#if></td>
+            <td style="width: auto;text-align: right">性别：</td>
+            <td style="width: 200px"><#if visaInfo.gender?exists>${visaInfo.gender}</#if></td>
+            <td style="width: auto;text-align: right">国藉：</td>
+            <td style="width: 200px"><#if visaInfo.nationality?exists>${visaInfo.nationality}</#if></td>
+        </tr>
+        <tr style="height: 30px;">
+            <td style="width: auto;text-align: right">护照ID：</td>
+            <td style="width: 200px"><#if visaInfo.passportNo?exists>${visaInfo.passportNo}</#if></td>
+            <td style="width: auto;text-align: right">出生日期：</td>
+            <td style="width: 200px;"><#if visaInfo.dateOfBirth?exists>${visaInfo.dateOfBirth}</#if></td>
+            <td style="width: auto;text-align: right">中国使馆：</td>
+            <td style="width: 200px;"><#if visaInfo.chineseEmbassy?exists>${visaInfo.chineseEmbassy}</#if></td>
+        </tr>
+        <tr style="height: 30px;">
+            <td style="width: auto;text-align: right">是否邮寄：</td>
+            <td style="width: 200px;"><#if visaInfo.needPost?exists && visaInfo.needPost>已经邮寄<#else>未邮寄</#if></td>
+            <td style="width: auto;text-align: right">是否可用：</td>
+            <td style="width: 200px;"><#if visaInfo.isDisabled?exists && visaInfo.isDisabled>可用<#else>不可用</#if></td>
+        </tr>
+        <tr style="height: 30px;">
+            <td style="width: auto;text-align: right">durationBeginTime：</td>
+            <td style="width: 200px;"><#if visaInfo.durationBeginTime?exists>${visaInfo.durationBeginTime}</#if></td>
+            <td style="width: auto;text-align: right">durationEndTime：</td>
+            <td style="width: 200px;"><#if visaInfo.durationEndTime?exists>${visaInfo.durationEndTime}</#if></td>
+        </tr>
+        <tr>
+            <td style="width: 120px;text-align: right">户照图片：</td>
+            <td colspan="9" style="width: 92%;text-align: left;word-break:break-all">
+                <#if visaInfo.passportPage?exists && visaInfo.passportPage!=''>
+                    <img src="http://www.stonefair.org.cn/${visaInfo.passportPage}" id="passportPage" name="passportPage" class="img-rounded" width="350" />
+                <#else>
+                    <img src="" id="passportPage" name="passportPage" class="img-rounded" width="300px" height="0px;" />
+                </#if>
+            </td>
+        </tr>
+        <tr>
+            <td style="width: 120px;text-align: right">营业执照：</td>
+            <td colspan="9" style="width: 92%;text-align: left;word-break:break-all">
+                <#if visaInfo.businessLicense?exists && visaInfo.businessLicense!=''>
+                    <img src="http://www.stonefair.org.cn/${visaInfo.businessLicense}" id="businessLicense" name="businessLicense" class="img-rounded" width="350" />
+                <#else>
+                    <img src="" id="businessLicense" name="businessLicense" class="img-rounded" width="300px" height="0px;" />
+                </#if>
+            </td>
+        </tr>
+    </table>
+</div>
+</body>
+</html>

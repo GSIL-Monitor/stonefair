@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="tea-manager:war">
+    <output-path>$PROJECT_DIR$/../Tea/tea-manager/target</output-path>
+    <root id="archive" name="manager.war">
+      <element id="artifact" artifact-name="tea-manager:war exploded" />
+    </root>
+  </artifact>
+</component>

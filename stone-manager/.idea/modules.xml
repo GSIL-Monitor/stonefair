@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/../../Buddha/buddha/buddha.iml" filepath="$PROJECT_DIR$/../../Buddha/buddha/buddha.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../../Buddha/buddha-manager/buddha-manager.iml" filepath="$PROJECT_DIR$/../../Buddha/buddha-manager/buddha-manager.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../../Common/common.iml" filepath="$PROJECT_DIR$/../../Common/common.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../../expoXicec/expoXicec/expoXicec.iml" filepath="$PROJECT_DIR$/../../expoXicec/expoXicec/expoXicec.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../qrcodescan/qrcodescan.iml" filepath="$PROJECT_DIR$/../qrcodescan/qrcodescan.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../stone/stone.iml" filepath="$PROJECT_DIR$/../stone/stone.iml" />
+      <module fileurl="file://$PROJECT_DIR$/stone-manager.iml" filepath="$PROJECT_DIR$/stone-manager.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../../Tea/tea/tea.iml" filepath="$PROJECT_DIR$/../../Tea/tea/tea.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../../Tea/tea-manager/tea-manager.iml" filepath="$PROJECT_DIR$/../../Tea/tea-manager/tea-manager.iml" />
+    </modules>
+  </component>
+</project>

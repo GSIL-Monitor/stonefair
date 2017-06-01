@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="Encoding">
+    <file url="file://$PROJECT_DIR$/../../Buddha/buddha" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/../../Buddha/buddha-manager" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/../../Common" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/../qrcodescan" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/../stone" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/../../Tea/tea" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/../../Tea/tea-manager" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/../../expoXicec/expoXicec" charset="UTF-8" />
+  </component>
+</project>

@@ -1,0 +1,732 @@
+<!DOCTYPE html>
+<#import "/common/spring.ftl" as spring />
+<html lang="zh-cn">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title><@spring.message "site"/></title>
+
+    <#include "/common/common-js.html" />
+    <!-- Custom styles for this template -->
+    <link href="${resource}/bootstrap/b2/css/bootstrap.css" rel="stylesheet">
+    <script src="${resource}/js/jquery.json-2.4.js"></script>
+    <script type="text/javascript" src="${base}/resource/easyui/plugins/jquery.messager.js"></script>
+    <style type="text/css">
+        .table > tbody > tr > td {
+            vertical-align: middle;
+        }
+
+        body {
+            padding-bottom: 40px;
+        }
+
+        .sidebar-nav {
+            padding: 9px 0;
+        }
+
+        @media (max-width: 980px) {
+            /* Enable use of floated navbar text */
+            .navbar-text.pull-right {
+                float: none;
+                padding-left: 5px;
+                padding-right: 5px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+<#include "/user/header.html" />
+<div style="width: 100%">
+    <div class="row-fluid" style="width: 962px;margin: 0px auto;">
+        <#include "/user/left.html" />
+        <div style="width: 639px;float: left;margin-left: 31px;background-color: #ffffff;padding: 20px;">
+            <div style="color: #f1b426;font-size: 16px;border-bottom: 1px #dbdbdb solid;line-height: 32px;font-weight: bolder"><@spring.message "module.invoice"/></div>
+            <div class="alert alert-block">
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                <h4>注意!</h4>
+                <font color="red">
+                    1、请谨慎选择开票类型，提交后无法更改。</br>
+                    2、个人汇款，只能开增值税普通发票。</br>
+                    3、增值税专用发票信息填写后，请打印、盖公章，并扫描上传采集表，上传后无法修改。</br>
+                    4、${invoice_data_end_html_zh_show}前提交，逾期系统自动关闭。</br>
+                    5、如有疑问，请及时拨打0592-5959616联系我们。
+                </font>
+            </div>
+            <div class="control-group">
+                <div class="controls">
+                    <#if invoice?exists>
+                        <#if invoice.invoice_flag?exists>
+                            <#if invoice.invoice_flag==0>
+                                <button type="button" id="noinvoice" class="btn btn-warning"><@spring.message "info.no.invoice.btn"/></button>
+                                <button type="button" id="normalinvoice" disabled="disabled" class="btn btn-warning"><@spring.message "info.normal.invoice.btn"/></button>
+                                <button type="button" id="generalinvoice" disabled="disabled" class="btn btn-warning"><@spring.message "info.general.invoice.btn"/></button>
+                                <button type="button" id="uploadinvoice" disabled="disabled" class="btn btn-warning"><@spring.message "info.upload.invoice.btn"/></button>
+                            </#if>
+                            <#if invoice.invoice_flag==1>
+                                <button type="button" id="noinvoice" disabled="disabled" class="btn btn-warning"><@spring.message "info.no.invoice.btn"/></button>
+                                <button type="button" id="normalinvoice" class="btn btn-warning"><@spring.message "info.normal.invoice.btn"/></button>
+                                <button type="button" id="generalinvoice" disabled="disabled" class="btn btn-warning"><@spring.message "info.general.invoice.btn"/></button>
+                                <button type="button" id="uploadinvoice" disabled="disabled" class="btn btn-warning"><@spring.message "info.upload.invoice.btn"/></button>
+                            </#if>
+                            <#if invoice.invoice_flag==2>
+                                <button type="button" id="noinvoice" disabled="disabled" class="btn btn-warning"><@spring.message "info.no.invoice.btn"/></button>
+                                <button type="button" id="normalinvoice" disabled="disabled" class="btn btn-warning"><@spring.message "info.normal.invoice.btn"/></button>
+                                <button type="button" id="generalinvoice" class="btn btn-warning"><@spring.message "info.general.invoice.btn"/></button>
+                                <button type="button" id="uploadinvoice" class="btn btn-warning"><@spring.message "info.upload.invoice.btn"/></button>
+                            </#if>
+                            <#if invoice.invoice_flag==3>
+                                <button type="button" disabled="disabled" id="noinvoice" class="btn btn-warning"><@spring.message "info.no.invoice.btn"/></button>
+                                <button type="button" disabled="disabled" id="normalinvoice" class="btn btn-warning"><@spring.message "info.normal.invoice.btn"/></button>
+                                <button type="button" disabled="disabled" id="generalinvoice" class="btn btn-warning"><@spring.message "info.general.invoice.btn"/></button>
+                                <button type="button" id="uploadinvoice" class="btn btn-warning"><@spring.message "info.upload.invoice.btn"/></button>
+                            </#if>
+                            <#else>
+                                <button type="button" id="noinvoice" class="btn btn-warning"><@spring.message "info.no.invoice.btn"/></button>
+                                <button type="button" id="normalinvoice" class="btn btn-warning"><@spring.message "info.normal.invoice.btn"/></button>
+                                <button type="button" id="generalinvoice" class="btn btn-warning"><@spring.message "info.general.invoice.btn"/></button>
+                                <button type="button" id="uploadinvoice" disabled="disabled" class="btn btn-warning"><@spring.message "info.upload.invoice.btn"/></button>
+                        </#if>
+                        <#else>
+                            <button type="button" id="noinvoice" class="btn btn-warning"><@spring.message "info.no.invoice.btn"/></button>
+                            <button type="button" id="normalinvoice" class="btn btn-warning"><@spring.message "info.normal.invoice.btn"/></button>
+                            <button type="button" id="generalinvoice" class="btn btn-warning"><@spring.message "info.general.invoice.btn"/></button>
+                            <button type="button" id="uploadinvoice" disabled="disabled" class="btn btn-warning"><@spring.message "info.upload.invoice.btn"/></button>
+                    </#if>
+                </div>
+            </div>
+        </div>
+    </div>
+    <hr>
+    <#include "/footer.html" />
+</div>
+
+<div class="modal hide fade" id="normalinvoiceDlg" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <form class="form-horizontal" role="form" id="modifyNormalInvoiceForm" target="submitFrame">
+                    <div class="control-group">
+                        <label for="inputPassword3" class="control-label"><@spring.message "info.normal.invoice.exhibitor.number"/></label>
+
+                        <div class="controls">
+                            <input type="text" name="invoiceExhibitorNum" class="form-control" id="inputPassword3"
+                                   placeholder='<@spring.message "info.normal.invoice.exhibitor.number"/>'>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label for="inputPassword3" class="control-label"><@spring.message "info.normal.invoice.title"/></label>
+
+                        <div class="controls">
+                            <input type="text" name="invoiceTitle" class="form-control" id="inputPassword3"
+                                   placeholder='<@spring.message "info.normal.invoice.title"/>'>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label for="inputPassword3" class="control-label"><@spring.message "info.normal.invoice.land.tax.num"/></label>
+
+                        <div class="controls">
+                            <input type="text" name="invoiceTaxNum" class="form-control" id="inputPassword3"
+                                   placeholder='<@spring.message "info.normal.invoice.land.tax.num"/>'>
+                        </div>
+                    </div>
+                    <input type="hidden" name="id">
+                    <input type="hidden" name="eid">
+                </form>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal"><@spring.message "info.joiner.participants.edit.close"/></button>
+                <button type="button" class="btn btn-primary" id="saveNormalInvoice"><@spring.message "info.joiner.participants.edit.save"/></button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal hide fade" id="generalinvoiceDlg" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" id="generalinvoiceDlgHeader">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <center><h4 class="modal-title" id="myModalLabel"><@spring.message "info.increment.invoice.edit.title"/></h4></center>
+            </div>
+            <div class="modal-body" id="generalinvoiceDlgBody">
+                <form class="form-horizontal" role="form" id="modifyGeneralInvoiceForm" target="submitFrame">
+                    <table border="1" cellpadding="1" style="width: 520px; height: auto">
+                        <!--公司注册登记名称（全称）-->
+                        <tr>
+                            <td>
+                                <label><@spring.message "info.increment.invoice.company.name"/></label>
+                            </td>
+                            <td colspan="2">
+                                <input style="width:96%" type="text" name="invoice_company" placeholder='<@spring.message "info.increment.invoice.company.name"/>'>
+                            </td>
+                        </tr>
+
+                        <!--公司纳税人识别号-->
+                        <tr>
+                            <td>
+                                <label><@spring.message "info.increment.invoice.taxer.number"/></label>
+                            </td>
+                            <td colspan="2">
+                                <input style="width:96%" type="text" name="invoice_taxpayer_no" placeholder='<@spring.message "info.increment.invoice.taxer.number"/>'>
+                            </td>
+                        </tr>
+
+                        <!--开户行及账号-->
+                        <tr>
+                            <td rowspan="2">
+                                <label><@spring.message "info.increment.invoice.bank"/></label>
+                            </td>
+                            <td colspan="2">
+                                <input style="width:96%" type="text" name="invoice_bank_name" placeholder='<@spring.message "info.increment.invoice.bank.name"/>'>
+                            </td>
+                        <tr>
+                            <td colspan="2">
+                                <input style="width:96%" type="text" name="invoice_bank_account" placeholder='<@spring.message "info.increment.invoice.bank.account"/>'>
+                            </td>
+                        </tr>
+                        </tr>
+
+                        <!--公司地址及电话-->
+                        <tr>
+                            <td rowspan="2">
+                                <label><@spring.message "info.increment.invoice.company.info"/></label>
+                            </td>
+                            <td colspan="2">
+                                <input style="width:96%" type="text" name="invoice_company_address" placeholder='<@spring.message "info.increment.invoice.company.address"/>'>
+                            </td>
+                        <tr>
+                            <td>
+                                <input style="width:92%" type="text" name="invoice_company_contact" placeholder='<@spring.message "info.increment.invoice.company.telphone"/>'>
+                            </td>
+                            <td>
+                                <input style="width:92%" type="text" name="invoice_company_tel" placeholder='<@spring.message "info.increment.invoice.company.contact"/>'>
+                            </td>
+                        </tr>
+                        </tr>
+
+                        <!--是否为增值税一般纳税人-->
+                        <tr>
+                            <td rowspan="2">
+                                <label><@spring.message "info.increment.invoice.company.istaxer"/></label>
+                            </td>
+                            <td colspan="2">
+                                <input name="invoiceTaxer" type="radio" value="1" /><@spring.message "info.increment.invoice.company.istaxer.yes"/>
+                            </td>
+                        <tr>
+                            <td colspan="2">
+                                <input name="invoiceTaxer" type="radio" value="0" /><@spring.message "info.increment.invoice.company.istaxer.no"/>
+                            </td>
+                        </tr>
+                        </tr>
+
+                        <!--需要开具增值税发票类型-->
+                        <tr>
+                            <td rowspan="2">
+                                <label><@spring.message "info.increment.invoice.type"/></label>
+                            </td>
+                            <td colspan="2">
+                                <input name="invoiceType" type="radio" value="1" /><@spring.message "info.increment.invoice.type.normal"/>
+                            </td>
+                        <tr>
+                            <td colspan="2">
+                                <input name="invoiceType" type="radio" value="2" /><@spring.message "info.increment.invoice.type.special"/>
+                            </td>
+                        </tr>
+                        </tr>
+
+                        <!--公司盖章（公章）-->
+                        <tr style="height: 60px">
+                            <td colspan="3">
+                                <label><@spring.message "info.increment.invoice.company.official"/></label>
+                            </td>
+                        </tr>
+
+                        <!--日期-->
+                        <tr >
+                            <td colspan="3">
+                                <label><@spring.message "info.increment.invoice.date"/></label>
+                            </td>
+                        </tr>
+                    </table>
+                    <input type="hidden" name="id">
+                    <input type="hidden" name="eid">
+                </form>
+            </div>
+            <font class="modal-body" color="red">*请先点“保存”，再“打印”。</font>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal"><@spring.message "info.joiner.participants.edit.close"/></button>
+                <button type="button" class="btn btn-primary" id="saveIncrementInvoice"><@spring.message "info.joiner.participants.edit.save"/></button>
+                <button type="button" class="btn btn-primary" id="printIncrementInvoice"><@spring.message "info.joiner.participants.edit.print"/></button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal hide fade" id="uploadinvoiceDlg" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <form class="form-horizontal" id="uploadInvoiceForm" method="post" enctype="multipart/form-data" action="${base}/user/invoice/uploadInvoiceImage" target="postIframe">
+                    <div class="control-group">
+                        <label for="invoice_image_address" class="control-label" style="width: 240px"><@spring.message "info.upload.invoice.image"/>
+                            <font color="#dc143c">
+                                <#if rc.locale=="zh_CN">
+                                    (不能超过1M,只支持jpg或者jpeg格式)
+                                <#else>
+                                    (less than 1M, for jpg or jpeg)
+                                </#if>
+                            </font>
+                        </label>
+
+                        <div class="controls">
+                            <input type="file" name="invoice_image_address" class="form-control" id="invoice_image_address" style="margin-left: 20px"
+                                   placeholder='<@spring.message "info.upload.invoice.image"/>' onchange="change()">
+                        </div>
+                    </div>
+
+                    <div class="control-group">
+                        <label class="control-label"></label>
+                        <#if invoice?exists>
+                            <#if invoice.invoice_image_address?exists && invoice.invoice_image_address!=''>
+                                <img style="width: 100px;height: 100px" data-src="holder.js/100x100" src="${base}/user/invoice/loadInvoiceImg?eid=${invoice.eid}" id="previewInvoiceImage" name="preview" />
+                                <#else>
+                                    <img style="width: 100px;height: 100px" data-src="holder.js/100x100" src="" id="previewInvoiceImage" name="previewInvoiceImage" class="img-rounded" />
+                            </#if>
+                            <#else>
+                                <img style="width: 100px;height: 100px" data-src="holder.js/100x100" src="" id="previewInvoiceImage" name="previewInvoiceImage" class="img-rounded" />
+                        </#if>
+                    </div>
+                    <input type="hidden" name="id">
+                    <input type="hidden" name="eid">
+                </form>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal"><@spring.message "info.joiner.participants.edit.close"/></button>
+                <button type="button" class="btn btn-primary" id="saveInvoiceImage" name="saveInvoiceImage"><@spring.message "info.joiner.participants.edit.save"/></button>
+            </div>
+        </div>
+    </div>
+</div>
+<iframe id="postIframe" name="postIframe" style="display: none"></iframe>
+
+<!--/.container-->
+<#assign localValue = "${rc.locale}">
+<script src="${resource}/bootstrap/b2/js/bootstrap.js"></script>
+<script>
+    function addSuccess(){
+        $("#uploadInvoiceForm input").val("");
+        $("#uploadinvoiceDlg").modal("hide");
+        <#if rc.locale=="zh_CN">
+            alert("保存成功");
+        <#else>
+            alert("save success");
+        </#if>
+        window.location.href = window.location.href;
+    }
+
+    function addFailure(){
+        <#if rc.locale=="zh_CN">
+            alert("保存失败");
+        <#else>
+            alert("save failure");
+        </#if>
+        window.location.href = window.location.href;
+    }
+
+    (function ($) {
+        $.fn.serializeJson = function () {
+            var serializeObj = {};
+            var array = this.serializeArray();
+            var str = this.serialize();
+            $(array).each(function () {
+                if (serializeObj[this.name]) {
+                    if ($.isArray(serializeObj[this.name])) {
+                        serializeObj[this.name].push(this.value);
+                    } else {
+                        serializeObj[this.name] = [serializeObj[this.name], this.value];
+                    }
+                } else {
+                    serializeObj[this.name] = this.value;
+                }
+            });
+            return serializeObj;
+        };
+    })(jQuery);
+
+    function change() {
+        var pic = document.getElementById("previewInvoiceImage");
+        var file = document.getElementById("invoice_image_address");
+        var ext = file.value.substring(file.value.lastIndexOf(".")+1).toLowerCase();
+
+        // gif在IE浏览器暂时无法显示
+        if(ext!='jpg' && ext!='jpeg'){
+            if('${rc.locale}' == 'zh_CN'){
+                alert("文件必须为jpg或jpeg格式！");
+            }else{
+                alert("The file must be jpg or jpeg image! ");
+            }
+            return;
+        }
+
+        var  browserCfg = {};
+        var ua = window.navigator.userAgent;
+        if (ua.indexOf("MSIE")>=1){
+            browserCfg.ie = true;
+        }else if(ua.indexOf("Firefox")>=1){
+            browserCfg.firefox = true;
+        }else if(ua.indexOf("Chrome")>=1){
+            browserCfg.chrome = true;
+        }
+
+        var filesize = 0;
+        if(browserCfg.firefox || browserCfg.chrome ){
+            filesize = file.files[0].size;
+        }else if(browserCfg.ie){
+            //转到JAVA后台处理
+        }
+
+        if(filesize/1024 > 1024){
+            if('${rc.locale}' == 'zh_CN'){
+                alert("文件大小超过1M，请重新选择图片！");
+            }else{
+                alert("The file size must be less than 1M, please upload image again! ");
+            }
+            return;
+        }
+        // IE浏览器
+        if(document.all){
+            file.select();
+            var reallocalpath = document.selection.createRange().text;
+            var ie6 = /msie 6/i.test(navigator.userAgent);
+            // IE6浏览器设置img的src为本地路径可以直接显示图片
+            if(ie6){
+                pic.src = reallocalpath;
+            }else{
+                // 非IE6版本的IE由于安全问题直接设置img的src无法显示本地图片，但是可以通过滤镜来实现
+                pic.style.filter = "progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod='image',src=\"" + reallocalpath + "\")";
+                // 设置img的src为base64编码的透明图片 取消显示浏览器默认图片
+                pic.src = 'data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==';
+            }
+        }else{
+            html5Reader(file);
+        }
+    }
+
+    function html5Reader(file){
+        var file = file.files[0];
+        var reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = function(e){
+            var pic = document.getElementById("previewInvoiceImage");
+            pic.src=this.result;
+        }
+    }
+
+    $(document).ready(function () {
+        $("#leftInvoice").addClass("lcurrent");
+        $("#noinvoice").click(function () {
+            if(confirm ("你确定不开发票?")){
+                $.ajax({
+                    url:"${base}/user/invoice/setNoInvoice",
+                    type:"POST",
+                    dataType:"json",
+                    success:function(data){
+                        if(data.resultCode==0){
+                            if('${rc.locale}' == 'zh_CN'){
+                                alert("保存成功");
+                            }else{
+                                alert("save success");
+                            }
+                            window.location.href = window.location.href;
+                        }else{
+                            if('${rc.locale}' == 'zh_CN'){
+                                alert("保存失败");
+                            }else{
+                                alert("save failure");
+                            }
+                        }
+                    }
+                });
+            }
+        });
+
+        $("#uploadinvoice").click(function () {
+            $("#uploadinvoiceDlg").modal();
+        });
+
+        $("[name='saveInvoiceImage']").click(function () {
+            if('${rc.locale}' == 'zh_CN'){
+                if(confirm ("发票上传后，发票信息将无法修改，你确定要上传增值发票图片吗?")){
+                    $("#uploadinvoiceDlg").modal("hide");
+                    $("#uploadInvoiceForm").submit();
+                }
+            }else{
+                if(confirm ("After upload invoice image，it could not modify invoice info again. Are you sure want to upload invoice image?")){
+                    $("#uploadinvoiceDlg").modal("hide");
+                    $("#uploadInvoiceForm").submit();
+                }
+            }
+        });
+
+        $("#normalinvoice").click(function () {
+            $.ajax({
+                url:"${base}/user/invoice/queryInvoice",
+                type:"POST",
+                dataType:"json",
+                success:function(data){
+                    $("#modifyNormalInvoiceForm input").val("");
+                    $("[name='invoiceExhibitorNum']").val(data.exhibitorNo);
+                    $("[name='invoiceTitle']").val(data.title);
+                    $("[name='invoiceTaxNum']").val(data.invoiceNo);
+                    $("#normalinvoiceDlg").modal();
+                }
+            });
+        });
+
+        $("#saveNormalInvoice").click(function () {
+            var parameters = $("#modifyNormalInvoiceForm").serializeJson();
+            if(confirm ("你确定只开普通发票?")){
+                $.ajax({
+                    url:"${base}/user/invoice/saveNormalInvoice",
+                    type:"POST",
+                    dataType:"json",
+                    data:parameters,
+                    success:function(data){
+                        if(data.resultCode==0){
+                            if('${rc.locale}' == 'zh_CN'){
+                                alert("修改成功");
+                            }else{
+                                alert("Modify success");
+                            }
+                            window.location.href = window.location.href;
+                        }else{
+                            if(data.description != ""){
+                                alert(data.description);
+                            }else{
+                                if('${rc.locale}' == 'zh_CN'){
+                                    alert("系统出错，修改失败！");
+                                }else{
+                                    alert("Modify failure for system is wrong");
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+        });
+
+        $("#generalinvoice").click(function () {
+            $.ajax({
+                url:"${base}/user/invoice/queryInvoice",
+                type:"POST",
+                dataType:"json",
+                success:function(data){
+                    $("#modifyGeneralInvoiceForm input").val("");
+                    $("[name='invoice_company']").val(data.invoice_company);
+                    $("[name='invoice_taxpayer_no']").val(data.invoice_taxpayer_no);
+                    $("[name='invoice_bank_name']").val(data.invoice_bank_name);
+                    $("[name='invoice_bank_account']").val(data.invoice_bank_account);
+                    $("[name='invoice_company_address']").val(data.invoice_company_address);
+                    $("[name='invoice_company_tel']").val(data.invoice_company_tel);
+                    $("[name='invoice_company_contact']").val(data.invoice_company_contact);
+                    var taxer = document.getElementsByName("invoiceTaxer");
+                    for(var i=0;i<taxer.length;i++){
+                        if((i+1) == data.invoice_general_taxpayer_flag){
+                            $(taxer[i]).attr("checked",'checked');
+                        }
+                    }
+                    var type = document.getElementsByName("invoiceType");
+                    for(var i=0;i<type.length;i++){
+                        if((i+1) == data.invoice_general_tax_type){
+                            $(type[i]).attr("checked",'checked');
+                        }
+                    }
+                    $("#generalinvoiceDlg").modal();
+                }
+            });
+        });
+
+        $("#saveIncrementInvoice").click(function () {
+            var taxer = document.getElementsByName("invoiceTaxer");
+            var taxerValue = 0;
+            var typeValue = 0;
+            for(var i=0;i<taxer.length;i++){
+                if(taxer[i].checked){
+                    taxerValue = i+1;
+                }
+            }
+            var type = document.getElementsByName("invoiceType");
+            for(var i=0;i<type.length;i++){
+                if(type[i].checked){
+                    typeValue = i+1;
+                }
+            }
+            var parameters = $("#modifyGeneralInvoiceForm").serializeJson();
+            parameters.invoiceTaxer = taxerValue;
+            parameters.invoiceType = typeValue;
+            if(parameters.invoice_company==''){
+                if('${rc.locale}' == 'zh_CN'){
+                    alert('<@spring.message "info.increment.invoice.company.name"/>' + "不能为空");
+                }else{
+                    alert('<@spring.message "info.increment.invoice.company.name"/>' + " must be need");
+                }
+                return
+            }
+            if(parameters.invoice_taxpayer_no==''){
+                if('${rc.locale}' == 'zh_CN'){
+                    alert('<@spring.message "info.increment.invoice.taxer.number"/>' + "不能为空");
+                }else{
+                    alert('<@spring.message "info.increment.invoice.taxer.number"/>' + " must be need");
+                }
+                return
+            }
+            if(parameters.invoice_bank_name==''){
+                if('${rc.locale}' == 'zh_CN'){
+                    alert('<@spring.message "info.increment.invoice.bank.name"/>' + "不能为空");
+                }else{
+                    alert('<@spring.message "info.increment.invoice.bank.name"/>' + " must be need");
+                }
+                return
+            }
+            if(parameters.invoice_bank_account==''){
+                if('${rc.locale}' == 'zh_CN'){
+                    alert('<@spring.message "info.increment.invoice.bank.account"/>' + "不能为空");
+                }else{
+                    alert('<@spring.message "info.increment.invoice.bank.account"/>' + " must be need");
+                }
+                return
+            }
+            if(parameters.invoice_company_address==''){
+                if('${rc.locale}' == 'zh_CN'){
+                    alert('<@spring.message "info.increment.invoice.company.address"/>' + "不能为空");
+                }else{
+                    alert('<@spring.message "info.increment.invoice.company.address"/>' + " must be need");
+                }
+                return
+            }
+            if(parameters.invoice_company_tel==''){
+                if('${rc.locale}' == 'zh_CN'){
+                    alert('<@spring.message "info.increment.invoice.company.contact"/>' + "不能为空");
+                }else{
+                    alert('<@spring.message "info.increment.invoice.company.contact"/>' + " must be need");
+                }
+                return
+            }
+            if(parameters.invoice_company_contact==''){
+                if('${rc.locale}' == 'zh_CN'){
+                    alert('<@spring.message "info.increment.invoice.company.telphone"/>' + "不能为空");
+                }else{
+                    alert('<@spring.message "info.increment.invoice.company.telphone"/>' + " must be need");
+                }
+                return
+            }
+            if(parameters.invoiceTaxer==''){
+                if('${rc.locale}' == 'zh_CN'){
+                    alert('<@spring.message "info.increment.invoice.company.istaxer"/>' + "不能为空");
+                }else{
+                    alert('<@spring.message "info.increment.invoice.company.istaxer"/>' + " must be need");
+                }
+                return
+            }
+            if(parameters.invoiceType==''){
+                if('${rc.locale}' == 'zh_CN'){
+                    alert('<@spring.message "info.increment.invoice.type"/>' + "不能为空");
+                }else{
+                    alert('<@spring.message "info.increment.invoice.type"/>' + " must be need");
+                }
+                return
+            }
+
+            $.ajax({
+                url:"${base}/user/invoice/saveGeneralInvoice",
+                type:"POST",
+                dataType:"json",
+                data:parameters,
+                success:function(data){
+                    if(data.resultCode==0){
+                        if('${rc.locale}' == 'zh_CN'){
+                            alert("修改成功");
+                        }else{
+                            alert("Modify failure");
+                        }
+                        window.location.href = window.location.href;
+                    }else{
+                        if(data.description != ""){
+                            alert(data.description);
+                        }else{
+                            if('${rc.locale}' == 'zh_CN'){
+                                alert("系统出错，修改失败！");
+                            }else{
+                                alert("Modify failure for system is wrong");
+                            }
+                        }
+                    }
+                }
+            });
+        });
+
+        $("#printIncrementInvoice").click(function () {
+            $.ajax({
+                url:"${base}/user/invoice/queryInvoice",
+                type:"POST",
+                dataType:"json",
+                success:function(data){
+                    $("[name='invoice_company']").val(data.invoice_company);
+                    $("[name='invoice_taxpayer_no']").val(data.invoice_taxpayer_no);
+                    $("[name='invoice_bank_name']").val(data.invoice_bank_name);
+                    $("[name='invoice_bank_account']").val(data.invoice_bank_account);
+                    $("[name='invoice_company_address']").val(data.invoice_company_address);
+                    $("[name='invoice_company_tel']").val(data.invoice_company_tel);
+                    $("[name='invoice_company_contact']").val(data.invoice_company_contact);
+                    var taxer = document.getElementsByName("invoiceTaxer");
+                    for(var i=0;i<taxer.length;i++){
+                        if((i+1) == data.invoice_general_taxpayer_flag){
+                            $(taxer[i]).attr("checked",'checked');
+                        }
+                    }
+                    var type = document.getElementsByName("invoiceType");
+                    for(var i=0;i<type.length;i++){
+                        if((i+1) == data.invoice_general_tax_type){
+                            $(type[i]).attr("checked",'checked');
+                        }
+                    }
+
+                    document.body.innerHTML = "</br></br>" + document.getElementById('generalinvoiceDlgHeader').innerHTML
+                            + "</br><center>"
+                            + document.getElementById('generalinvoiceDlgBody').innerHTML
+                            + "</center>";
+                    document.getElementsByName("invoice_company")[0].value = data.invoice_company;
+                    document.getElementsByName("invoice_taxpayer_no")[0].value = data.invoice_taxpayer_no;
+                    document.getElementsByName("invoice_bank_name")[0].value = data.invoice_bank_name;
+                    document.getElementsByName("invoice_bank_account")[0].value = data.invoice_bank_account;
+                    document.getElementsByName("invoice_company_address")[0].value = data.invoice_company_address;
+                    document.getElementsByName("invoice_company_tel")[0].value = data.invoice_company_tel;
+                    document.getElementsByName("invoice_company_contact")[0].value = data.invoice_company_contact;
+                    var taxer = document.getElementsByName("invoiceTaxer");
+                    for(var i=0;i<taxer.length;i++){
+                        if((i+1) == data.invoice_general_taxpayer_flag){
+                            $(taxer[i]).attr("checked",'checked');
+                        }
+                    }
+                    var type = document.getElementsByName("invoiceType");
+                    for(var i=0;i<type.length;i++){
+                        if((i+1) == data.invoice_general_tax_type){
+                            $(type[i]).attr("checked",'checked');
+                        }
+                    }
+                    window.print();
+                    window.location.href = window.location.href;
+                }
+            });
+        });
+    });
+</script>
+</body>
+</html>

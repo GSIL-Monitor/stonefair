@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="qrcodescan:war">
+    <output-path>$PROJECT_DIR$/../Stone/qrcodescan/target</output-path>
+    <root id="archive" name="scancode.war">
+      <element id="artifact" artifact-name="qrcodescan:war exploded" />
+    </root>
+  </artifact>
+</component>

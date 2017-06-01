@@ -1,0 +1,10 @@
+<component name="libraryTable">
+  <library name="ImApi">
+    <CLASSES>
+      <root url="jar://D:/会展公司相关资料/ImApi.jar!/" />
+      <root url="jar://D:/会展公司相关资料/javaproj-1.0.6-noawt.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

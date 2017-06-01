@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>金泓信展商管理后台</title>
+    <link rel="stylesheet" type="text/css" href="${base}/resource/easyui/themes/metro-blue/easyui.css">
+    <link rel="stylesheet" type="text/css" href="${base}/resource/easyui/themes/icon.css">
+    <style>
+        body {
+            margin: 0px;
+            padding: 0px;
+            width: 100%;
+            height: 100%;
+        }
+
+        input {
+            width: 200px;
+            height: 20px;
+        }
+    </style>
+</head>
+<body>
+<!-- 境外客商问卷调查 -->
+<div style="height: auto;" class="easyui-panel" title="境外客商问卷调查">
+    <#if visitorFeedBack?exists>
+        <table id="customerSurveyTable" name="customerSurveyTable" class="customerSurveyTable" border="0" style="width: 100%;table-layout：fixed;">
+            <tr style="height: 30px">
+                <td style="width: 6%;text-align: right">姓名：</td>
+                <td style="width: 10%;"><#if visitorFeedBack.userName?exists>${visitorFeedBack.userName}</#if></td>
+                <td style="width: 6%;text-align: right">创建时间：</td>
+                <td style="width: 10%;"><#if visitorFeedBack.createTime?exists>${visitorFeedBack.createTime}</#if></td>
+                <td style="width: 6%;text-align: right">状态：</td>
+                <td style="width: 10%;">
+                    <#if visitorFeedBack.readed==1>已读</#if>
+                    <#if visitorFeedBack.readed==0>未读</#if>
+                </td>
+            </tr>
+            <tr style="height: 30px">
+                <td style="width: 6%;text-align: right">问题一：</td>
+                <td style="width: 10%;"><#if visitorFeedBack.q1?exists>${visitorFeedBack.q1}</#if></td>
+                <td style="width: 6%;text-align: right">答案一：</td>
+                <td style="width: 10%;"><#if visitorFeedBack.a1?exists>${visitorFeedBack.a1}</#if></td>
+            </tr>
+            <tr style="height: 30px">
+                <td style="width: 6%;text-align: right">问题二：</td>
+                <td style="width: 10%;"><#if visitorFeedBack.q2?exists>${visitorFeedBack.q2}</#if></td>
+                <td style="width: 6%;text-align: right">答案二：</td>
+                <td style="width: 10%;"><#if visitorFeedBack.a2?exists>${visitorFeedBack.a2}</#if></td>
+            </tr>
+            <tr style="height: 30px">
+                <td style="width: 6%;text-align: right">问题三：</td>
+                <td style="width: 10%;"><#if visitorFeedBack.q3?exists>${visitorFeedBack.q3}</#if></td>
+                <td style="width: 6%;text-align: right">答案三：</td>
+                <td style="width: 10%;"><#if visitorFeedBack.a3?exists>${visitorFeedBack.a3}</#if></td>
+            </tr>
+            <tr style="height: 30px">
+                <td style="width: 6%;text-align: right">问题四：</td>
+                <td style="width: 10%;"><#if visitorFeedBack.q4?exists>${visitorFeedBack.q4}</#if></td>
+                <td style="width: 6%;text-align: right">答案四：</td>
+                <td style="width: 10%;"><#if visitorFeedBack.a4?exists>${visitorFeedBack.a4}</#if></td>
+            </tr>
+            <tr style="height: 30px">
+                <td style="width: 6%;text-align: right">问题五：</td>
+                <td style="width: 10%;"><#if visitorFeedBack.q5?exists>${visitorFeedBack.q5}</#if></td>
+                <td style="width: 6%;text-align: right">答案五：</td>
+                <td style="width: 10%;"><#if visitorFeedBack.a5?exists>${visitorFeedBack.a5}</#if></td>
+            </tr>
+            <tr style="height: 30px">
+                <td style="width: 6%;text-align: right">问题六：</td>
+                <td style="width: 10%;"><#if visitorFeedBack.q6?exists>${visitorFeedBack.q6}</#if></td>
+                <td style="width: 6%;text-align: right">答案六：</td>
+                <td style="width: 10%;"><#if visitorFeedBack.a6?exists>${visitorFeedBack.a6}</#if></td>
+            </tr>
+            <tr style="height: 30px">
+                <td style="width: 6%;text-align: right">问题七：</td>
+                <td style="width: 10%;"><#if visitorFeedBack.q7?exists>${visitorFeedBack.q7}</#if></td>
+                <td style="width: 6%;text-align: right">答案七：</td>
+                <td style="width: 10%;"><#if visitorFeedBack.a7?exists>${visitorFeedBack.a7}</#if></td>
+            </tr>
+            <tr style="height: 30px">
+                <td style="width: 6%;text-align: right">问题八：</td>
+                <td style="width: 10%;"><#if visitorFeedBack.q8?exists>${visitorFeedBack.q8}</#if></td>
+                <td style="width: 6%;text-align: right">答案八：</td>
+                <td style="width: 10%;"><#if visitorFeedBack.a8?exists>${visitorFeedBack.a8}</#if></td>
+            </tr>
+            <tr style="height: 30px">
+                <td style="width: 6%;text-align: right">问题九：</td>
+                <td style="width: 10%;"><#if visitorFeedBack.q9?exists>${visitorFeedBack.q9}</#if></td>
+                <td style="width: 6%;text-align: right">答案九：</td>
+                <td style="width: 10%;"><#if visitorFeedBack.a9?exists>${visitorFeedBack.a9}</#if></td>
+            </tr>
+            <tr style="height: 30px">
+                <td style="width: 6%;text-align: right">问题十：</td>
+                <td style="width: 10%;"><#if visitorFeedBack.q10?exists>${visitorFeedBack.q10}</#if></td>
+                <td style="width: 6%;text-align: right">答案十：</td>
+                <td style="width: 10%;"><#if visitorFeedBack.a10?exists>${visitorFeedBack.a10}</#if></td>
+            </tr>
+            <tr style="height: 30px">
+                <td style="width: 6%;text-align: right">问题十一：</td>
+                <td style="width: 10%;"><#if visitorFeedBack.q11?exists>${visitorFeedBack.q11}</#if></td>
+                <td style="width: 6%;text-align: right">答案十一：</td>
+                <td style="width: 10%;"><#if visitorFeedBack.a11?exists>${visitorFeedBack.a11}</#if></td>
+            </tr>
+            <tr style="height: 30px">
+                <td style="width: 6%;text-align: right">问题十二：</td>
+                <td style="width: 10%;"><#if visitorFeedBack.q12?exists>${visitorFeedBack.q12}</#if></td>
+                <td style="width: 6%;text-align: right">答案十二：</td>
+                <td style="width: 10%;"><#if visitorFeedBack.a12?exists>${visitorFeedBack.a12}</#if></td>
+            </tr>
+            <tr style="height: 30px">
+                <td style="width: 6%;text-align: right">问题十三：</td>
+                <td style="width: 10%;"><#if visitorFeedBack.q13?exists>${visitorFeedBack.q13}</#if></td>
+                <td style="width: 6%;text-align: right">答案十三：</td>
+                <td style="width: 10%;"><#if visitorFeedBack.a13?exists>${visitorFeedBack.a13}</#if></td>
+            </tr>
+            <tr style="height: 30px">
+                <td style="width: 6%;text-align: right">问题十四：</td>
+                <td style="width: 10%;"><#if visitorFeedBack.q14?exists>${visitorFeedBack.q14}</#if></td>
+                <td style="width: 6%;text-align: right">答案十四：</td>
+                <td style="width: 10%;"><#if visitorFeedBack.a14?exists>${visitorFeedBack.a14}</#if></td>
+            </tr>
+            <tr style="height: 30px">
+                <td style="width: 6%;text-align: right">问题十五：</td>
+                <td style="width: 10%;"><#if visitorFeedBack.q15?exists>${visitorFeedBack.q15}</#if></td>
+                <td style="width: 6%;text-align: right">答案十五：</td>
+                <td style="width: 10%;"><#if visitorFeedBack.a15?exists>${visitorFeedBack.a15}</#if></td>
+            </tr>
+            <tr style="height: 30px">
+                <td style="width: 6%;text-align: right">问题十六：</td>
+                <td style="width: 10%;"><#if visitorFeedBack.q16?exists>${visitorFeedBack.q16}</#if></td>
+                <td style="width: 6%;text-align: right">答案十六：</td>
+                <td style="width: 10%;"><#if visitorFeedBack.a16?exists>${visitorFeedBack.a16}</#if></td>
+            </tr>
+            <tr style="height: 30px">
+                <td style="width: 6%;text-align: right">问题十七：</td>
+                <td style="width: 10%;"><#if visitorFeedBack.q17?exists>${visitorFeedBack.q17}</#if></td>
+                <td style="width: 6%;text-align: right">答案十七：</td>
+                <td style="width: 10%;"><#if visitorFeedBack.a17?exists>${visitorFeedBack.a17}</#if></td>
+            </tr>
+            <tr style="height: 30px">
+                <td style="width: 6%;text-align: right">问题十八：</td>
+                <td style="width: 10%;"><#if visitorFeedBack.q18?exists>${visitorFeedBack.q18}</#if></td>
+                <td style="width: 6%;text-align: right">答案十八：</td>
+                <td style="width: 10%;"><#if visitorFeedBack.a18?exists>${visitorFeedBack.a18}</#if></td>
+            </tr>
+            <tr style="height: 30px">
+                <td style="width: 6%;text-align: right">问题十九：</td>
+                <td style="width: 10%;"><#if visitorFeedBack.q19?exists>${visitorFeedBack.q19}</#if></td>
+                <td style="width: 6%;text-align: right">答案十九：</td>
+                <td style="width: 10%;"><#if visitorFeedBack.a19?exists>${visitorFeedBack.a19}</#if></td>
+            </tr>
+            <tr style="height: 30px">
+                <td style="width: 6%;text-align: right">问题二十：</td>
+                <td style="width: 10%;"><#if visitorFeedBack.q20?exists>${visitorFeedBack.q20}</#if></td>
+                <td style="width: 6%;text-align: right">答案二十：</td>
+                <td style="width: 10%;"><#if visitorFeedBack.a20?exists>${visitorFeedBack.a20}</#if></td>
+            </tr>
+        </table>
+    </#if>
+</div>
+</body>
+</html>

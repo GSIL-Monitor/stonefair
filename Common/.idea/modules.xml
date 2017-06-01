@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/../Buddha/buddha/buddha.iml" filepath="$PROJECT_DIR$/../Buddha/buddha/buddha.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../Buddha/buddha-manager/buddha-manager.iml" filepath="$PROJECT_DIR$/../Buddha/buddha-manager/buddha-manager.iml" />
+      <module fileurl="file://$PROJECT_DIR$/common.iml" filepath="$PROJECT_DIR$/common.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../expoXicec/expoXicec/expoXicec.iml" filepath="$PROJECT_DIR$/../expoXicec/expoXicec/expoXicec.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../IDCardXicec/IDCardXicec/idcardxicec.iml" filepath="$PROJECT_DIR$/../IDCardXicec/IDCardXicec/idcardxicec.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../Stone/qrcodescan/qrcodescan.iml" filepath="$PROJECT_DIR$/../Stone/qrcodescan/qrcodescan.iml" />
+      <module fileurl="file://D:\git_repository_new\XICEC-JHX-EMS\IDCardXicec\IDCardXicec\qrcodescan (1).iml" filepath="D:\git_repository_new\XICEC-JHX-EMS\IDCardXicec\IDCardXicec\qrcodescan (1).iml" />
+      <module fileurl="file://$PROJECT_DIR$/../Stone/stone/stone.iml" filepath="$PROJECT_DIR$/../Stone/stone/stone.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../Stone/stone-manager/stone-manager.iml" filepath="$PROJECT_DIR$/../Stone/stone-manager/stone-manager.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../Tea/tea/tea.iml" filepath="$PROJECT_DIR$/../Tea/tea/tea.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../Tea/tea-manager/tea-manager.iml" filepath="$PROJECT_DIR$/../Tea/tea-manager/tea-manager.iml" />
+    </modules>
+  </component>
+</project>

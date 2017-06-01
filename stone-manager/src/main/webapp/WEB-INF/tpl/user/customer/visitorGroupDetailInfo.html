@@ -1,0 +1,560 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>金泓信展商管理后台</title>
+    <link rel="stylesheet" type="text/css" href="${base}/resource/easyui/themes/metro-blue/easyui.css">
+    <link rel="stylesheet" type="text/css" href="${base}/resource/easyui/themes/icon.css">
+    <script type="text/javascript" src="${base}/resource/jquery.min.js"></script>
+    <script type="text/javascript" src="${base}/resource/easyui/jquery.easyui.min.js"></script>
+    <script type="text/javascript" src="${base}/resource/easyui/empty-view.js"></script>
+    <script type="text/javascript" src="${base}/resource/ajaxfileupload.js"></script>
+    <script type="text/javascript" src="${base}/resource/common.js"></script>
+    <script type="text/javascript" src="${base}/resource/easyui/easyui-validate.js"></script>
+    <style>
+        body {
+            margin: 0px;
+            padding: 0px;
+            width: 100%;
+            height: 100%;
+        }
+
+        input {
+            width: 200px;
+            height: 20px;
+        }
+
+        #bg{ display: none; position: absolute; top: 0%; left: 0%; width: 50%; height: 50%; background-color: black; z-index:1001; -moz-opacity: 0.2; opacity:.2; filter: alpha(opacity=50);}
+        .loading{display: none; position: absolute; top: 50%; left: 50%; z-index:1002; }
+    </style>
+</head>
+<body>
+<!-- 参展团信息 -->
+<div style="height: auto;" class="easyui-panel" title="参展团信息">
+    <table id="customerinfo" name="customerinfo" style="width: 90%;margin-left: 10px;margin-top: 5px">
+        <tr style="height: 30px;">
+            <td style="width: auto" colspan="3">
+                <a id="modifyGroupInfo" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-edit'">修改展团信息</a>
+                <!--<a id="sendEmail" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-ok'" style="margin-left: 10px" >发送邮件</a>-->
+                <!--<a id="sendMsg" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-save'">发送短信</a>-->
+                <a id="setActiveOrUnactive" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-redo'"><#if tVisitorGroupInfo.isDisabled?exists && tVisitorGroupInfo.isDisabled==0>注销<#else>激活</#if></a>
+            </td>
+        </tr>
+    </table>
+    <!-- 参观团信息内容 -->
+    <table id="groupInfoTable" name="groupInfoTable" border="0" style="width: 100%;margin-top: 5px;margin-bottom: 10px">
+        <tr style="height: 30px">
+            <td style="width: 15%;text-align: right">参展团名称：</td>
+            <td style="width: 20%;"><#if tVisitorGroupInfo.groupName?exists>${tVisitorGroupInfo.groupName}</#if></td>
+            <td style="width: 15%;text-align: right">创建时间：</td>
+            <td style="width: 20%;"><#if tVisitorGroupInfo.createTime?exists>${tVisitorGroupInfo.createTime}</#if></td>
+            <td style="width: 15%;text-align: right">更新时间：</td>
+            <td style="width: 20%;"><#if tVisitorGroupInfo.updateTime?exists>${tVisitorGroupInfo.updateTime}</#if></td>
+        </tr>
+    </table>
+</div>
+
+<div id="customerbar">
+    <div style="display:inline-block;">
+        <div class="easyui-menubutton" menu="#email" iconCls="icon-redo">邮件</div>
+    </div>
+    <div id="email" style="width:180px;">
+        <div id="emailAllGroupMembers" iconCls="icon-redo">群发所有团员邮件</div>
+        <div id="emailSelectedGroupMembers" iconCls="icon-redo">群发所选团员邮件</div>
+    </div>
+    <div style="display:inline-block;">
+        <div class="easyui-menubutton" menu="#msg" iconCls="icon-redo">短信</div>
+    </div>
+    <div id="msg" style="width:180px;">
+        <div id="msgAllGroupMembers" iconCls="icon-redo">群发所有团员短信</div>
+        <div id="msgSelectedGroupMembers" iconCls="icon-redo">群发所选团员短信</div>
+    </div>
+</div>
+<!-- 参观团成员列表 -->
+<div style="height: 550px;" class="easyui-panel" title="团员列表">
+    <table id="groupMember${leaderID}" data-options="url:'${base}/user/queryVisitorMemberListByGroupId',
+            								 loadMsg: '数据加载中......',
+									         singleSelect:false,	//只能单行选择：关闭
+									         fit:true,
+									         fitColumns:true,
+									         idField:'leaderID',
+											 queryParams: {leaderID:${leaderID}},
+											 toolbar:'#customerbar',
+									         rownumbers: true,
+									         pagination:'true',
+									         pageSize:'20'">
+        <thead>
+        <tr>
+            <th data-options="field:'ck',checkbox:true"></th>
+            <th data-options="field: 'checkingNo', title: '确认号', width: $(this).width() * 0.1"></th>
+            <th data-options="field: 'memberName', title: '姓名', width: $(this).width() * 0.1"></th>
+            <th data-options="field: 'company', title: '公司', width: $(this).width() * 0.1"></th>
+            <th data-options="field: 'email', title: '邮箱', width: $(this).width() * 0.2"></th>
+            <th data-options="field: 'position', title: '职位', width: $(this).width() * 0.1"></th>
+            <th data-options="field: 'mobile', title: '手机', width: $(this).width() * 0.12"></th>
+            <th data-options="field: 'address', title: '地址', width: $(this).width() * 0.25"></th>
+            <th data-options="field: 'Integer', formatter:formatGroup, title: '身份', width: $(this).width() * 0.05"></th>
+            <th data-options="field: 'createTime', formatter:formatDatebox, title: '注册时间', width: $(this).width() * 0.1"></th>
+            <th data-options="field: 'updateTime', formatter:formatDatebox, title: '更新时间', width: $(this).width() * 0.1"></th>
+            <th data-options="field: 'emailNum', title: '邮件数量', width: $(this).width() * 0.05"></th>
+            <th data-options="field: 'msgNum', title: '短信数量', width: $(this).width() * 0.05"></th>
+        </tr>
+        </thead>
+    </table>
+</div>
+
+<!-- 参展团具体信息  -->
+<div id="groupInfoManageDlg" data-options="iconCls:'icon-edit',modal:true">
+    <form id="groupInfoManageForm"  name="groupInfoManageForm">
+        <table style="width: 320px;margin: 20px auto">
+            <tr>
+                <td style="width: 90px;text-align: right">参展团名称：</td>
+                <td><input class="easyui-validatebox" type="text" value="${(tVisitorGroupInfo.groupName)!''}" name="groupName"></td>
+            </tr>
+            <input type="hidden" value="${leaderID}" name="leaderID" />
+        </table>
+    </form>
+</div>
+
+<!-- 参展团成员具体信息  -->
+<div id="modifyMemberDetailInfoDlg" data-options="iconCls:'icon-edit',modal:true">
+    <form id="modifyMemberDetailInfoForm" name="modifyMemberDetailInfoForm">
+        <table style="width: 320px;margin: 20px auto">
+            <tr>
+                <td style="width: 90px;text-align: right">公司名称：</td>
+                <td><input class="easyui-validatebox" type="text" name="group_member_company" id="group_member_company"/></td>
+            </tr>
+            <tr>
+                <td style="width: 90px;text-align: right">姓名：</td>
+                <td><input class="easyui-validatebox" type="text" name="group_member_name" id="group_member_name"/></td>
+            </tr>
+            <tr>
+                <td style="width: 90px;text-align: right">职位：</td>
+                <td><input class="easyui-validatebox" type="text" name="group_member_position" id="group_member_position"/></td>
+            </tr>
+            <tr>
+                <td style="width: 90px;text-align: right">手机：</td>
+                <td><input class="easyui-validatebox" type="text" name="group_member_telphone" id="group_member_telphone"/></td>
+            </tr>
+            <tr>
+                <td style="width: 90px;text-align: right">邮箱：</td>
+                <td><input class="easyui-validatebox" type="text" name="group_member_email" id="group_member_email"/></td>
+            </tr>
+            <tr>
+                <td style="width: 90px;text-align: right">地址：</td>
+                <td><input class="easyui-validatebox" type="text" name="group_member_address" id="group_member_address"/></td>
+            </tr>
+            <tr>
+                <td style="width: 90px;text-align: right">身份：</td>
+                <td>
+                    <select id="group_member_Identify" name="group_member_Identify">
+                        <option value="1">团长</option>
+                        <option value="0">团员</option>
+                    </select>
+                </td>
+            </tr>
+            <input type="hidden" value="${leaderID}" name="leaderID" />
+            <input type="hidden" name="id" />
+        </table>
+    </form>
+</div>
+<div class="loading"><img src="${base}/resource/load.gif"></div>
+
+<script>
+    var checkedGroupMember = [];
+
+    function formatGroup(val, row) {
+        if (1 == row.isLeader) {
+            return "团长";
+        } else if (0 == row.isLeader) {
+            return "团员";
+        } else return "";
+    }
+
+    //日期时间格式转换
+    function formatDatebox(value) {
+        if (value == null || value == '') {
+            return '';
+        }
+        var dt;
+        if (value instanceof Date) {
+            dt = value;
+        }
+        else {
+            dt = new Date(value);
+            if (isNaN(dt)) {
+                value = value.replace(/\/Date\((-?\d+)\)\//, '$1'); //标红的这段是关键代码，将那个长字符串的日期值转换成正常的JS日期格式
+                dt = new Date();
+                dt.setTime(value);
+            }
+        }
+
+        return dt.format("yyyy-MM-dd h:m");   //这里用到一个javascript的Date类型的拓展方法，这个是自己添加的拓展方法，在后面的步骤3定义
+    }
+
+    Date.prototype.format = function (format)
+    {
+        var o = {
+            "M+": this.getMonth() + 1, //month
+            "d+": this.getDate(),    //day
+            "h+": this.getHours(),   //hour
+            "m+": this.getMinutes(), //minute
+            "s+": this.getSeconds(), //second
+            "q+": Math.floor((this.getMonth() + 3) / 3),  //quarter
+            "S": this.getMilliseconds() //millisecond
+        }
+        if (/(y+)/.test(format)) format = format.replace(RegExp.$1,
+                (this.getFullYear() + "").substr(4 - RegExp.$1.length));
+        for (var k in o) if (new RegExp("(" + k + ")").test(format))
+            format = format.replace(RegExp.$1,
+                    RegExp.$1.length == 1 ? o[k] :
+                            ("00" + o[k]).substr(("" + o[k]).length));
+        return format;
+    }
+
+    // 团员列表渲染
+    $("#groupMember${leaderID}").datagrid({
+        onSelect:function (rowIndex, rowData){
+            var row = $('#groupMember${leaderID}').datagrid('getSelections');
+            for (var i = 0; i < row.length; i++) {
+                if (findCheckedGroupMember(row[i].id) == -1) {
+                    checkedGroupMember.push(row[i].id);
+                }
+            }
+        },
+        onUnselect:function (rowIndex, rowData){
+            var k = findCheckedGroupMember(rowData.id);
+            if (k != -1) {
+                checkedGroupMember.splice(k, 1);
+            }
+        },
+        onSelectAll:function (rows){
+            for (var i = 0; i < rows.length; i++) {
+                var k = findCheckedGroupMember(rows[i].id);
+                if (k == -1) {
+                    checkedGroupMember.push(rows[i].id);
+                }
+            }
+        },
+        onUnselectAll:function (rows){
+            for (var i = 0; i < rows.length; i++) {
+                var k = findCheckedGroupMember(rows[i].id);
+                if (k != -1) {
+                    checkedGroupMember.splice(k, 1);
+                }
+            }
+        },
+        onLoadSuccess:function(data){
+            if(data.rows.length==0){
+                var body = $(this).data().datagrid.dc.body2;
+                body.find('table tbody').append('<tr><td width="'+body.width()+'" style="height: 25px; text-align: center;" colspan="4">没有数据</td></tr>');
+            }
+        },
+        onDblClickRow: function (index, field, value) {
+            document.modifyMemberDetailInfoForm.id.value = field.id;
+            document.getElementById('group_member_company').value = field.company;
+            document.getElementById('group_member_name').value = field.memberName;
+            document.getElementById('group_member_position').value = field.position;
+            document.getElementById('group_member_telphone').value = field.mobile;
+            document.getElementById('group_member_email').value = field.email;
+            document.getElementById('group_member_address').value = field.address;
+
+            var all_options = document.getElementById("group_member_Identify").options;
+            for (var i=0; i<all_options.length; i++){
+                if (all_options[i].value == field.isLeader)  // 根据option标签的ID来进行判断  测试的代码这里是两个等号
+                {
+                    all_options[i].selected = true;
+                }
+            }
+            $("#modifyMemberDetailInfoDlg").dialog("open");
+        }
+    }).datagrid('getPager').pagination({
+        pageSize: 20,//每页显示的记录条数，默认为10
+        pageList: [10,20,30,40,50],//可以设置每页记录条数的列表
+        beforePageText: '第',//页数文本框前显示的汉字
+        afterPageText: '页    共 {pages} 页',
+        displayMsg: '当前显示 {from} - {to} 条记录   共 {total} 条记录'
+    });
+
+    function findCheckedGroupMember(id) {
+        for (var i = 0; i < checkedGroupMember.length; i++) {
+            if (checkedGroupMember[i] == id) return i;
+        }
+        return -1;
+    }
+
+    // 参展团信息弹出框
+    $('#groupInfoManageDlg').dialog({
+        title: '修改参展团信息',
+        width: 350,
+        height: 150,
+        closed: true,
+        cache: false,
+        modal: true,
+        buttons: [
+            {
+                text: '确认修改',
+                handler: function () {
+                    if ($("#groupInfoManageForm").form("validate")) {
+                        $.ajax({
+                            url: "${base}/user/modifyGroupInfo",
+                            type: "post",
+                            dataType: "json",
+                            data: $("#groupInfoManageForm").serializeJson(),
+                            success: function (data) {
+                                if (data.resultCode == 0) {
+                                    $("#groupInfoManageDlg").dialog("close");
+                                    window.location.href = window.location.href;
+                                    $.messager.show({
+                                        title: '成功',
+                                        msg: '参展团信息修改成功',
+                                        timeout: 3000,
+                                        showType: 'slide'
+                                    });
+                                } else {
+                                    $.messager.alert('错误', data.description);
+                                }
+                            }
+                        });
+                    }
+                }
+            },
+            {
+                text: '取消',
+                handler: function () {
+                    $("#groupInfoManageDlg").dialog("close")
+                }
+            }
+        ]
+    });
+
+    //参展团成员弹出框
+    $('#modifyMemberDetailInfoDlg').dialog({
+        title: '成员具体信息',
+        left: 335,
+        top: 100,
+        width: 400,
+        height: 350,
+        closed: true,
+        cache: false,
+        modal: true,
+        buttons: [
+            {
+                text: '确认修改',
+                handler: function () {
+                    if ($("#modifyMemberDetailInfoForm").form("validate")) {
+                        $.ajax({
+                            url: "${base}/user/modifyGroupMemberInfo",
+                            type: "post",
+                            dataType: "json",
+                            data: $("#modifyMemberDetailInfoForm").serializeJson(),
+                            success: function (data) {
+                                if (data.resultCode == 0) {
+                                    $("#modifyMemberDetailInfoDlg").dialog("close");
+                                    $("#groupMember${leaderID}").datagrid('reload');
+                                    $('#groupMember${leaderID}').datagrid('clearSelections');
+                                    $.messager.show({
+                                        title: '成功',
+                                        msg: '参观团成员属性修改成功',
+                                        timeout: 3000,
+                                        showType: 'slide'
+                                    });
+                                } else {
+                                    $.messager.alert('错误', data.description);
+                                }
+                            }
+                        });
+                    }
+                }
+            },
+            {
+                text: '关闭',
+                handler: function () {
+                    document.getElementById("modifyMemberDetailInfoForm").reset();
+                    $("#modifyMemberDetailInfoDlg").dialog("close");
+                }
+            }
+        ]
+    });
+
+    //修改参展团信息
+    $("#modifyGroupInfo").click(function () {
+        $("#groupInfoManageDlg").dialog("open");
+    });
+
+    //激活或注销参展团信息
+    $("#setActiveOrUnactive").click(function () {
+        $.messager.confirm('确认修改','你确定修改参展团属性吗?',function(r){
+            if (r){
+                $.ajax({
+                    url: "${base}/user/setGroupActiveOrUnactive",
+                    type: "post",
+                    dataType: "json",
+                    data: {"leaderID": ${leaderID}},
+                    success: function (data) {
+                        if (data.resultCode == 0) {
+                            $.messager.show({
+                                title: '成功',
+                                msg: '参展团属性修改成功',
+                                timeout: 3000,
+                                showType: 'slide'
+                            });
+                            alert('参展团属性修改成功');
+                            window.location.href=window.location.href;
+                        } else {
+                            $.messager.alert('错误', data.description);
+                        }
+                    }
+                });
+            }
+        });
+    });
+
+    //给所有成员群发邮件
+    $("#emailAllGroupMembers").click(function () {
+        $.messager.confirm('确认发送','你确定要给所有成员发邮件吗?',function(r){
+            if (r){
+                $("#bg,.loading").show();
+                $.ajax({
+                    url: "${base}/user/emailAllGroupMember",
+                    type: "post",
+                    dataType: "json",
+                    data: {"cids": "-1", "leaderID": ${leaderID}},
+                    beforeSend:function(XMLHttpRequest){
+                        $.messager.show({
+                            title: '处理中...',
+                            msg: '正在发送邮件，请稍等...',
+                            timeout: 3000,
+                            showType: 'slide'
+                        });
+                    },
+                    success: function (data) {
+                        $("#bg,.loading").hide();
+                        if (data.resultCode == 0) {
+                            $.messager.show({
+                                title: '成功',
+                                msg: '给所有成员发送邮件成功',
+                                timeout: 3000,
+                                showType: 'slide'
+                            });
+                            alert('给所有成员发送邮件成功');
+                            window.location.href=window.location.href;
+                        } else {
+                            $.messager.alert('错误', data.description);
+                        }
+                    },
+                    error: function (result) {
+                        $("#bg,.loading").hide();
+                        alert('给所有成员发送邮件失败');
+                    }
+                });
+            }
+        });
+    });
+
+    //给所选成员发邮件
+    $('#emailSelectedGroupMembers').click(function(){
+        if(checkedGroupMember.length > 0){
+            $.messager.confirm('确认发送','你确定要给所选成员发邮件吗?',function(r){
+                if (r){
+                    $("#bg,.loading").show();
+                    $.ajax({
+                        url: "${base}/user/emailAllGroupMember",
+                        type: "post",
+                        data: {"cids": checkedGroupMember, "leaderID": ${leaderID}},
+                        dataType: "json",
+                        traditional: true,
+                        success: function (data) {
+                            $("#bg,.loading").hide();
+                            if (data.resultCode == 0) {
+                                $.messager.show({
+                                    title: '成功',
+                                    msg: '给所选成员发邮件成功',
+                                    timeout: 5000,
+                                    showType: 'slide'
+                                });
+                                $("#customers").datagrid("reload");
+                            } else {
+                                $.messager.alert('错误', '系统错误');
+                            }
+                        }
+                    });
+                }
+            });
+        }else{
+            $.messager.alert('提示', '请至少选择一项再操作');
+        }
+    });
+
+    //给所有成员群发短信
+    $("#msgAllGroupMembers").click(function () {
+        $.messager.confirm('确认发送','你确定要所有成员发短信吗?',function(r){
+            if (r){
+                $.ajax({
+                    url: "${base}/user/msgAllGroupMember",
+                    type: "post",
+                    dataType: "json",
+                    data: {"cids": "-1", "leaderID": ${leaderID}},
+                    beforeSend:function(XMLHttpRequest){
+                        $.messager.show({
+                            title: '处理中...',
+                            msg: '正在发送短信，请稍等...',
+                            timeout: 3000,
+                            showType: 'slide'
+                        });
+                    },
+                    success: function (data) {
+                        if (data.resultCode == 0) {
+                            $.messager.show({
+                                title: '成功',
+                                msg: '给所有成员发送短信成功',
+                                timeout: 3000,
+                                showType: 'slide'
+                            });
+                            alert('给所有成员发送短信成功');
+                            window.location.href = window.location.href;
+                        } else {
+                            $.messager.alert('错误', data.description);
+                        }
+                    }
+                });
+            }
+        });
+    });
+
+    //给所选成员群发短信
+    $("#msgSelectedGroupMembers").click(function () {
+        if(checkedGroupMember.length > 0){
+            $.messager.confirm('确认发送','你确定要给所选成员发短信吗?',function(r){
+                if (r){
+                    $("#bg,.loading").show();
+                    $.ajax({
+                        url: "${base}/user/msgAllGroupMember",
+                        type: "post",
+                        data: {"cids": checkedGroupMember, "leaderID": ${leaderID}},
+                        dataType: "json",
+                        traditional: true,
+                        success: function (data) {
+                            $("#bg,.loading").hide();
+                            if (data.resultCode == 0) {
+                                $.messager.show({
+                                    title: '成功',
+                                    msg: '给所选成员发短信成功',
+                                    timeout: 5000,
+                                    showType: 'slide'
+                                });
+                                $("#customers").datagrid("reload");
+                            } else {
+                                $.messager.alert('错误', '系统错误');
+                            }
+                        }
+                    });
+                }
+            });
+        }else{
+            $.messager.alert('提示', '请至少选择一项再操作');
+        }
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>金泓信展商管理后台</title>
+    <script type="text/javascript" src="${base}/resource/jquery.min.js"></script>
+    <script type="text/javascript" src="${base}/resource/js/jquery-1.12.4.js"></script>
+    <script type="text/javascript" src="${base}/resource/echarts/echarts.min.js"></script>
+    <style>
+        body {
+            margin: 0px;
+            padding: 0px;
+            width: 100%;
+            height: 100%;
+        }
+
+        input {
+            width: 150px;
+            height: 26px;
+        }
+    </style>
+</head>
+<body>
+<table id="datareportshow" class="easyui-treegrid" fitColumns="true" >
+    <tr>
+        <td width="100" align="center">问卷题目：</td>
+        <td width="30" align="center">
+            <select id="visitorFeedBackTitleSource" onchange="showDataReport();"></select>
+        </td>
+        <td width="100" align="center">选择排名数：</td>
+        <td width="30" align="center">
+            <select id="visitorFeedBackRankingNumber" onchange="showDataReport();">
+                <option value="3">前3名</option>
+                <option value="5">前5名</option>
+                <option value="10">前10名</option>
+                <option value="-1">全部</option>
+            </select>
+        </td>
+    </tr>
+</table>
+<div id="dataReportRegin" style="height: 480px; width: 90%;border:1px solid #ccc;" align="center"></div>
+</body>
+</html>
+<script type="text/javascript">
+    var questionList = {};
+    var dataOfQuestionSelect = [];
+
+    $(document).ready(function () {
+        //加载题目列表
+        $.ajax({
+            type: "post",
+            dataType: "json",
+            url: "${base}/user/queryForeignCustomerFeedBackTypeList",
+            success: function (result) {
+                if (result.resultCode == 0) {
+                    $("#visitorFeedBackTitleSource").html('');
+                    $("#visitorFeedBackTitleSource").append('<option value="-1">选择查看问卷调查统计</option>');
+                    for (var i = 0, a; a = result.rows[i++];) {
+                        questionList[a.id] = a.question_name;
+                        $("#visitorFeedBackTitleSource").append('<option value="' + a.id + '">' + "【" + i + "】" + a.question_name + '</option>');
+                    }
+                }else{
+                    alert(result.description);
+                }
+            },
+            error: function (result) {
+                $("#visitorFeedBackTitleSource").html('');
+                alert(result.description);
+            }
+        });
+    });
+
+    function showDataReport() {
+        var selectIndex = $('#visitorFeedBackTitleSource option:selected').val();
+        var rankNum = $('#visitorFeedBackRankingNumber option:selected').val();
+        $.ajax({
+            type: "post",
+            dataType: "json",
+            url: "${base}/user/countForeignCustomerFeedBackByFeedBackId",
+            data: {'feedbackId': selectIndex, "rankNum": rankNum},
+            success: function (data) {
+                if (data.resultCode == 0) {
+                    //var json = $.parseJSON(result);
+                    var feedBackData = JSON.parse(data.result);
+                    var total = JSON.parse(data.total);
+                    initPieInfo(questionList[selectIndex], feedBackData);
+                }else{
+                    alert(data.description);
+                }
+            },
+            error: function (data) {
+                alert(data.description);
+            }
+        });
+    }
+
+    function initPieInfo(title, feedBackData) {
+        var pieChart = echarts.init(document.getElementById('dataReportRegin'));
+        /*var showData = ['高圆圆','赵丽颖','江莱'];*/
+        var showData = [];
+        for (var i = 0; i < feedBackData.length; i++) {
+            showData.push(feedBackData[i].name);
+        }
+        /*var json = [
+            {value:30,name:'高圆圆'},
+            {value:26,name:'赵丽颖'},
+            {value:24,name:'江莱'}
+        ];*/
+        var option = {
+            title : {
+                text: "【" + title + "】分布图",
+                x:'center'
+            },
+            tooltip : {
+                trigger: 'item',
+                formatter: "{a} <br/>{b} : {c} 位"
+            },
+            legend: {
+                orient : 'vertical',
+                x : 'left',
+                data:showData
+            },
+            toolbox: {
+                show : true,
+                feature : {
+                    mark : {show: true},
+                    dataView : {show: true, readOnly: false},
+                    magicType : {
+                        show: true,
+                        type: ['pie', 'funnel'],
+                        option: {
+                            funnel: {
+                                x: '25%',
+                                width: '50%',
+                                funnelAlign: 'left',
+                                max: 1548
+                            }
+                        }
+                    },
+                    restore : {show: true},
+                    saveAsImage : {show: true}
+                }
+            },
+            calculable : true,
+            series : [
+                {
+                    name:title,
+                    type:'pie',
+                    radius : '55%',//饼图的半径大小
+                    center: ['50%', '60%'],//饼图的位置
+                    data:feedBackData
+                }
+            ]
+        };
+        pieChart.setOption(option);
+    }
+</script>

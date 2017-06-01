@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="FrameworkDetectionExcludesConfiguration">
+    <file type="web" url="file://$PROJECT_DIR$/../Buddha/buddha" />
+    <file type="web" url="file://$PROJECT_DIR$/../Buddha/buddha-app" />
+    <file type="web" url="file://$PROJECT_DIR$/../Buddha/buddha-manager" />
+    <file type="web" url="file://$PROJECT_DIR$/../expoXicec/expoXicec" />
+    <file type="web" url="file://$PROJECT_DIR$/../IDCardXicec/IDCardXicec" />
+    <file type="web" url="file://$PROJECT_DIR$/../Stone/qrcodescan" />
+    <file type="web" url="file://$PROJECT_DIR$/../Stone/stone" />
+    <file type="web" url="file://$PROJECT_DIR$/../Stone/stone-manager" />
+    <file type="web" url="file://$PROJECT_DIR$/../Tea/tea" />
+    <file type="web" url="file://$PROJECT_DIR$/../Tea/tea-manager" />
+    <type id="Spring" />
+  </component>
+  <component name="MavenProjectsManager">
+    <option name="originalFiles">
+      <list>
+        <option value="$PROJECT_DIR$/pom.xml" />
+        <option value="$PROJECT_DIR$/../Buddha/buddha/pom.xml" />
+        <option value="$PROJECT_DIR$/../Buddha/buddha-manager/pom.xml" />
+        <option value="$PROJECT_DIR$/../expoXicec/expoXicec/pom.xml" />
+        <option value="$PROJECT_DIR$/../Stone/stone/pom.xml" />
+        <option value="$PROJECT_DIR$/../Stone/stone-manager/pom.xml" />
+        <option value="$PROJECT_DIR$/../Stone/qrcodescan/pom.xml" />
+        <option value="$PROJECT_DIR$/../Tea/tea/pom.xml" />
+        <option value="$PROJECT_DIR$/../Tea/tea-manager/pom.xml" />
+        <option value="$PROJECT_DIR$/../IDCardXicec/IDCardXicec/pom.xml" />
+      </list>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_3" default="false" project-jdk-name="1.8" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/out" />
+  </component>
+</project>

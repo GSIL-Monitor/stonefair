@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>金泓信展商管理后台</title>
+    <link rel="stylesheet" type="text/css" href="${base}/resource/easyui/themes/metro-blue/easyui.css">
+    <link rel="stylesheet" type="text/css" href="${base}/resource/easyui/themes/icon.css">
+    <script type="text/javascript" src="${base}/resource/jquery.min.js"></script>
+    <script type="text/javascript" src="${base}/resource/easyui/jquery.easyui.min.js"></script>
+    <script type="text/javascript" src="${base}/resource/ajaxfileupload.js"></script>
+    <script type="text/javascript" src="${base}/resource/common.js"></script>
+    <script type="text/javascript" src="${base}/resource/easyui/easyui-validate.js"></script>
+    <style>
+        body {
+            margin: 0px;
+            padding: 0px;
+            width: 100%;
+            height: 100%;
+        }
+
+        input {
+            width: 200px;
+            height: 20px;
+        }
+    </style>
+</head>
+<body>
+<!-- visa信息 -->
+<div style="height: auto;" class="easyui-panel" title="visa信息">
+    <table  id="visaInfoTable"  name="visaInfoTable" style="width: 90%;margin-left: 10px;margin-top: 5px;margin-bottom: 10px">
+        <tr style="height: 30px;">
+            <td style="width: auto;text-align: right">姓名：</td>
+            <td style="width: 200px"><#if visaInfo.passportName?exists>${visaInfo.passportName}</#if></td>
+            <td style="width: auto;text-align: right">性别：</td>
+            <td style="width: 200px"><#if visaInfo.gender?exists><#if visaInfo.gender==1>男<#else>女</#if></#if></td>
+            <td style="width: auto;text-align: right">职位：</td>
+            <td style="width: 200px"><#if visaInfo.jobTitle?exists>${visaInfo.jobTitle}</#if></td>
+        </tr>
+        <tr style="height: 30px;">
+            <td style="width: auto;text-align: right">国藉：</td>
+            <td style="width: 200px"><#if visaInfo.nationality?exists>${visaInfo.nationality}</#if></td>
+            <td style="width: auto;text-align: right">展位号：</td>
+            <td style="width: 200px"><#if visaInfo.boothNo?exists>${visaInfo.boothNo}</#if></td>
+            <td style="width: auto;text-align: right">参展人员：</td>
+            <td style="width: 200px;"><#if joinerInfo?exists>${joinerInfo.name}</#if></td>
+        </tr>
+        <tr style="height: 30px;">
+            <td style="width: auto;text-align: right">公司名称：</td>
+            <td style="width: 200px"><#if visaInfo.companyName?exists>${visaInfo.companyName}</#if></td>
+            <td style="width: auto;text-align: right">公司网址：</td>
+            <td style="width: 200px"><#if visaInfo.companyWebsite?exists>${visaInfo.companyWebsite}</#if></td>
+            <td style="width: auto;text-align: right">邮箱：</td>
+            <td style="width: 200px"><#if visaInfo.email?exists>${visaInfo.email}</#if></td>
+        </tr>
+        <tr style="height: 30px;">
+            <td style="width: auto;text-align: right">护照ID：</td>
+            <td style="width: 200px;"><#if visaInfo.passportNo?exists>${visaInfo.passportNo}</#if></td>
+            <td style="width: auto;text-align: right">地址：</td>
+            <td style="width: 200px;"><#if visaInfo.address?exists>${visaInfo.address}</#if></td>
+            <td style="width: auto;text-align: right">手机：</td>
+            <td style="width: 200px"><#if visaInfo.tel?exists>${visaInfo.tel}</#if></td>
+        </tr>
+        <tr style="height: 30px;">
+            <td style="width: auto;text-align: right">户照到期时间：</td>
+            <td style="width: 200px;"><#if visaInfo.expDate?exists>${visaInfo.expDate}</#if></td>
+            <td style="width: auto;text-align: right">在华停留开始时间：</td>
+            <td style="width: 200px;"><#if visaInfo.from?exists>${visaInfo.from}</#if></td>
+            <td style="width: auto;text-align: right">在华停留结束时间：</td>
+            <td style="width: 200px;"><#if visaInfo.to?exists>${visaInfo.to}</#if></td>
+        </tr>
+        <tr style="height: 30px;">
+            <td style="width: auto;text-align: right">传真：</td>
+            <td style="width: 200px"><#if visaInfo.fax?exists>${visaInfo.fax}</#if></td>
+            <td style="width: auto;text-align: right">创建时间：</td>
+            <td style="width: 200px;"><#if visaInfo.createTime?exists>${visaInfo.createTime}</#if></td>
+            <td style="width: auto;text-align: right">更新时间：</td>
+            <td style="width: 200px;"><#if visaInfo.updateTime?exists>${visaInfo.updateTime}</#if></td>
+        </tr>
+        <tr>
+            <td style="width: auto;text-align: right">户照图片：</td>
+            <td colspan="9" style="width: 92%;text-align: left;word-break:break-all">
+                <#if visaInfo.passportPage?exists && visaInfo.passportPage!=''>
+                    <img src="${base}/user/showPassportPage?vid=${visaInfo.id}" id="passportPage" name="passportPage" class="img-rounded" width="350" />
+                <#else>
+                    <img src="" id="passportPage" name="passportPage" class="img-rounded" width="300px" height="0px;" />
+                </#if>
+            </td>
+        </tr>
+        <tr>
+            <td style="width: auto;text-align: right">营业执照：</td>
+            <td colspan="9" style="width: 92%;text-align: left;word-break:break-all">
+                <#if visaInfo.businessLicense?exists && visaInfo.businessLicense!=''>
+                    <img src="${base}/user/showPassportPage?vid=${visaInfo.id}" id="businessLicense" name="businessLicense" class="img-rounded" width="350" />
+                <#else>
+                    <img src="" id="businessLicense" name="businessLicense" class="img-rounded" width="300px" height="0px;" />
+                </#if>
+            </td>
+        </tr>
+    </table>
+</div>
+</body>
+</html>

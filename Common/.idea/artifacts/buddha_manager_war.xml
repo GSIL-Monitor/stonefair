@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="buddha-manager:war">
+    <output-path>$PROJECT_DIR$/../Buddha/buddha-manager/target</output-path>
+    <root id="archive" name="manager.war">
+      <element id="artifact" artifact-name="buddha-manager:war exploded" />
+    </root>
+  </artifact>
+</component>

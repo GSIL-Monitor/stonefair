@@ -1,0 +1,1048 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>金泓信展商管理后台</title>
+    <link type="text/css" href="${base}/resource/css/style.css" rel="stylesheet" />
+    <link rel="stylesheet" type="text/css" href="${base}/resource/easyui/themes/metro-blue/easyui.css">
+    <link rel="stylesheet" type="text/css" href="${base}/resource/easyui/themes/icon.css">
+    <script type="text/javascript" src="${base}/resource/js/jquery-1.12.4.js"></script>
+    <script type="text/javascript" src="${base}/resource/js/jquery-ui.js"></script>
+    <script type="text/javascript" src="${base}/resource/jquery.min.js"></script>
+    <script type="text/javascript" src="${base}/resource/easyui/jquery.easyui.min.js"></script>
+    <script type="text/javascript" src="${base}/resource/ajaxfileupload.js"></script>
+    <script type="text/javascript" src="${base}/resource/common.js"></script>
+    <script type="text/javascript" src="${base}/resource/easyui/easyui-validate.js"></script>
+    <style>
+        body {
+            margin: 0px;
+            padding: 0px;
+            width: 100%;
+            height: 100%;
+        }
+
+        input {
+            width: 200px;
+            height: 20px;
+        }
+    </style>
+</head>
+<body>
+<!-- 账号信息 -->
+<div style="height: auto;" class="easyui-panel" title="账号信息">
+    <!-- 账号信息内容 -->
+    <table  id="accountInfoTable"  name="accountInfoTable" style="width: 90%;margin-left: 10px;margin-top: 5px;margin-bottom: 10px">
+        <tr style="height: 30px">
+            <td style="width: 120px;text-align: right">公司名称：</td>
+            <td style="width: 200px"><#if tExhibitorBackupInfo.exhibitor_info_company?exists>${tExhibitorBackupInfo.exhibitor_info_company}</#if></td>
+            <td style="width: 130px;text-align: right">公司英文名：</td>
+            <td style="width: 200px"><#if tExhibitorBackupInfo.exhibitor_info_company_en?exists>${tExhibitorBackupInfo.exhibitor_info_company_en}</#if></td>
+            <td style="width: 80px;text-align: right">用户名：</td>
+            <td style="width: 200px"><#if tExhibitorBackupInfo.username?exists>${tExhibitorBackupInfo.username}</#if></td>
+            <td style="width: 80px;text-align: right">密码：</td>
+            <td style="width: 200px"><#if tExhibitorBackupInfo.password?exists>${tExhibitorBackupInfo.password}</#if></td>
+            <td style="width: 120px;text-align: right">展位面积：</td>
+            <td style="width: 200px;"><#if tExhibitorBackupInfo.exhibitionArea?exists>${tExhibitorBackupInfo.exhibitionArea}</#if>平方米</td>
+            <td></td>
+        </tr>
+        <tr style="height: 30px">
+            <td style="width: 80px;text-align: right">绑定展会：</td>
+            <td style="width: 200px">
+                <#if tExhibitorBackupInfo.exhibitor_term_join_term?exists>${tExhibitorBackupInfo.exhibitor_term_join_term}
+                <#else>未激活展会
+                </#if>
+            </td>
+            <td style="width: 80px;text-align: right">展区：</td>
+            <td style="width: 200px">
+                <#if tExhibitorBackupInfo.exhibitor_booth_exhibition_area?exists>${tExhibitorBackupInfo.exhibitor_booth_exhibition_area}
+                <#else>未绑定展区
+                </#if></td>
+            <td style="width: 80px;text-align: right">展位：</td>
+            <td style="width: 200px">
+                <#if tExhibitorBackupInfo.exhibitor_booth_booth_number?exists>${tExhibitorBackupInfo.exhibitor_booth_booth_number}
+                <#else>未绑定展位
+                </#if></td>
+            <td style="width: 100px;text-align: right">标摊类型：</td>
+            <td style="width: 200px">
+                <#if tExhibitorBackupInfo.exhibitor_booth_mark?exists && tExhibitorBackupInfo.exhibitor_booth_mark=='0'>空地</#if>
+                <#if tExhibitorBackupInfo.exhibitor_booth_mark?exists && tExhibitorBackupInfo.exhibitor_booth_mark=='1'>标摊</#if>
+            </td>
+            <td style="width: 100px;text-align: right">合同编号：</td>
+            <td style="width: 200px"><#if tExhibitorBackupInfo.contractId?exists>${tExhibitorBackupInfo.contractId}</#if></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td style="width: 130px;text-align: right">展商邀请涵：</td>
+            <td style="width: 120px">
+                <#if tExhibitorBackupInfo.send_invitation_flag?exists && 1==tExhibitorBackupInfo.send_invitation_flag>已发送<#else>未发送</#if>
+            </td>
+            <td style="width: 120px;text-align: right">发送时间：</td>
+            <td style="width: 140px">
+                <#if tExhibitorBackupInfo.updateTime?exists && tExhibitorBackupInfo.send_invitation_flag?exists && 1==tExhibitorBackupInfo.send_invitation_flag>${tExhibitorBackupInfo.updateTime}</#if>
+            </td>
+        </tr>
+    </table>
+</div>
+<!-- 展商基本信息 -->
+<div style="height: auto;" class="easyui-panel" title="展商基本信息">
+    <!-- 展商基本信息内容 -->
+    <#if exhibitorInfo?exists>
+        <table id="exhibitorInfoTable" name="exhibitorInfoTable" class="exhibitorinfo" border="0" style="width: 100%;table-layout：fixed">
+            <tr style="height: 30px">
+                <td style="width: 8%;text-align: right">公司中文名：</td>
+                <td style="width: 13.4%;"><#if tExhibitorBackupInfo.exhibitor_info_company?exists>${tExhibitorBackupInfo.exhibitor_info_company}</#if></td>
+                <td style="width: 7%;text-align: right">公司英文名：</td>
+                <td style="width: 13.4%;"><#if tExhibitorBackupInfo.exhibitor_info_company_en?exists>${tExhibitorBackupInfo.exhibitor_info_company_en}</#if></td>
+                <td style="width: 10%;text-align: right">电话：</td>
+                <td style="width: 12.5%;"><#if tExhibitorBackupInfo.exhibitor_info_phone?exists>${tExhibitorBackupInfo.exhibitor_info_phone}</#if></td>
+                <td style="width: 10%;text-align: right">传真：</td>
+                <td style="width: 10%;"><#if tExhibitorBackupInfo.exhibitor_info_fax?exists>${tExhibitorBackupInfo.exhibitor_info_fax}</#if></td>
+                <td style="width: 6.5%;text-align: right">邮箱：</td>
+                <td style="width: 9.7%;"><a href="mailto:<#if tExhibitorBackupInfo.exhibitor_info_email?exists>${tExhibitorBackupInfo.exhibitor_info_email}</#if>"><#if tExhibitorBackupInfo.exhibitor_info_email?exists>${tExhibitorBackupInfo.exhibitor_info_email}</#if></a></td>
+            </tr>
+            <tr style="height: 30px">
+                <td style="width: 8%;text-align: right">地址：</td>
+                <td style="width: 13.4%;"><#if tExhibitorBackupInfo.exhibitor_info_address?exists>${tExhibitorBackupInfo.exhibitor_info_address}</#if></td>
+                <td style="width: 7%;text-align: right">地址(英文)：</td>
+                <td style="width: 13.4%;"><#if tExhibitorBackupInfo.exhibitor_info_address_en?exists>${tExhibitorBackupInfo.exhibitor_info_address_en}</#if></td>
+                <td style="width: 10%;text-align: right">企业楣牌：</td>
+ <!--石材展需求--><td style="width: 12.5%;"><#if tExhibitorBackupInfo.exhibitor_info_meipai?exists>${tExhibitorBackupInfo.exhibitor_info_meipai}</#if></td>
+            	<td style="width: 10%;text-align: right">企业楣牌(英文)：</td>
+ <!--石材展需求--><td style="width: 10%;"><#if tExhibitorBackupInfo.exhibitor_info_meipai_en?exists>${tExhibitorBackupInfo.exhibitor_info_meipai_en}</#if></td>
+            </tr>
+            <tr>
+                <td style="width: 8.5%;text-align: right">公司纳税人识别号：</td>
+                <td style="width: 9.7%;"><#if tExhibitorBackupInfo?exists><#if tExhibitorBackupInfo.exhibitor_invoice_apply_invoice_no?exists>${tExhibitorBackupInfo.exhibitor_invoice_apply_invoice_no}</#if></#if></td>
+            </tr>
+            <tr style="height: 30px">
+            	<td style="width: 8%;text-align: right">产品分类：</td>
+            	<td style="width: 13.4%;"><#if tExhibitorBackupInfo.exhibitor_product_type?exists>${tExhibitorBackupInfo.exhibitor_product_type}</#if></td></td>
+                <td style="width: 7%;text-align: right">主营产品：</td>
+                <td style="width: 13.4%;"><#if tExhibitorBackupInfo.exhibitor_info_main_product?exists>${tExhibitorBackupInfo.exhibitor_info_main_product}</#if></td>
+                <td style="width: 10%;text-align: right">主营产品(英文)：</td>
+                <td style="width: 12.5%;"><#if tExhibitorBackupInfo.exhibitor_info_main_product_en?exists>${tExhibitorBackupInfo.exhibitor_info_main_product_en}</#if></td>
+                <td style="width: 10%;text-align: right">网址：</td>
+                <td style="width: 10%;" id="websitehref"><a id="openWebsite" href="#"><#if tExhibitorBackupInfo.exhibitor_info_website?exists>${tExhibitorBackupInfo.exhibitor_info_website}</#if></a></td>
+            </tr>
+            <tr style="height: 30px">
+                <td style="width: 10%;text-align: right">发票类型：</td>
+                <td style="width: 10%;color: red">
+                    <#if tExhibitorBackupInfo?exists>
+                        <#if tExhibitorBackupInfo.exhibitor_invoice_apply_invoice_flag?exists && tExhibitorBackupInfo.exhibitor_invoice_apply_invoice_flag==0>不开发票</#if>
+                        <#if tExhibitorBackupInfo.exhibitor_invoice_apply_invoice_flag?exists && tExhibitorBackupInfo.exhibitor_invoice_apply_invoice_flag==1>普通发票</#if>
+                        <#if tExhibitorBackupInfo.exhibitor_invoice_apply_invoice_flag?exists && tExhibitorBackupInfo.exhibitor_invoice_apply_invoice_flag==2>增值发票</#if>
+                        <#if tExhibitorBackupInfo.exhibitor_invoice_apply_invoice_flag?exists && tExhibitorBackupInfo.exhibitor_invoice_apply_invoice_flag==3>增值发票</#if>
+                    </#if>
+                </td>
+                <td style="width: 10%;text-align: right">发票抬头：</td>
+                <td style="width: 25%;color: red"><#if tExhibitorBackupInfo?exists><#if tExhibitorBackupInfo.exhibitor_invoice_apply_title?exists>${tExhibitorBackupInfo.exhibitor_invoice_apply_title}</#if></#if></td>
+            </tr>
+            <#if invoice?exists>
+                <#if tExhibitorBackupInfo.exhibitor_invoice_apply_invoice_flag?exists && tExhibitorBackupInfo.exhibitor_invoice_apply_invoice_flag==3>
+                    <tr style="height: 30px">
+                        <td style="width: 10%;text-align: left">发票图片：</td>
+                        <td colspan="4" style="width: 46%;text-align: right;word-break:break-all">
+                            <#if tExhibitorBackupInfo.exhibitor_invoice_apply_invoice_image_address?exists && tExhibitorBackupInfo.exhibitor_invoice_apply_invoice_image_address!=''>
+                                <img src="${base}/user/showExhibitorBackupInvoiceImage?id=${tExhibitorBackupInfo.id}" name="preview" width="300px"/>
+                                <#else>
+                                    <img src="" id="previewInvoiceImage" name="previewInvoiceImage" class="img-rounded" />
+                            </#if>
+                        </td>
+                    </tr>
+                </#if>
+            </#if>
+            <tr style="height: 30px">
+            	<td style="width: 8%;text-align: right">公司简介：</td>
+                <td colspan="9" style="width: 92%;text-align: left;word-break:break-all"><#if tExhibitorBackupInfo.exhibitor_info_mark?exists>${tExhibitorBackupInfo.exhibitor_info_mark}</#if></td>
+            </tr>
+            <tr style="height: 30px">
+                <td style="width: 8%;text-align: right">公司亮点：</td>
+                <td colspan="9" style="width: 92%;text-align: left;word-break:break-all"><#if tExhibitorBackupInfo.exhibitor_info_company_hignlight?exists>${tExhibitorBackupInfo.exhibitor_info_company_hignlight}</#if></td>
+            </tr>
+            <tr style="height: 30px">
+            	<td style="width: 8%;text-align: right">公司Logo：</td>
+				<td colspan="4" style="width: 46%;text-align: left;word-break:break-all">
+                	<#if tExhibitorBackupInfo.exhibitor_info_logo?exists && tExhibitorBackupInfo.exhibitor_info_logo!=''>
+						<img src="${base}/user/showExhibitorBackupLogo?id=${tExhibitorBackupInfo.id}" id="logoImg" name="logoImg" class="img-rounded" width="300px" />
+					<#else>
+						<img src="" id="logoImg" name="logoImg" class="img-rounded" width="300px" height="0px;" />
+					</#if>
+                </td>
+            </tr>
+        </table>
+	<#else>
+		<div style="margin:10px 10px">该展商未完善展商信息。</div>
+    </#if>
+</div>
+<!-- 产品列表 -->
+<div style="height: 250px;" class="easyui-panel" title="产品列表">
+    <table id="products${id}" data-options="url:'${base}/user/queryExhibitorBackupProductList',
+            								 loadMsg: '数据加载中......',
+									         singleSelect:false,	//只能单行选择：关闭
+									         fit:true,
+									         fitColumns:true,
+									         idField:'id',
+											 queryParams: {id:${id}},
+									         rownumbers: true,
+									         pagination:'true',
+									         pageSize:'20'">
+		<thead>
+			<tr>
+				<th data-options="field:'ck',checkbox:true"></th>
+				<th data-options="field: 'productName', title: '产品名', width: $(this).width() * 0.25"></th>
+				<th data-options="field: 'productModel', title: '产品型号', width: $(this).width() * 0.25"></th>
+				<th data-options="field: 'origin', title: '产品原产地', width: $(this).width() * 0.25"></th>
+				<th data-options="field: 'productBrand', title: '产品品牌', width: $(this).width() * 0.25"></th>
+			</tr>
+		</thead>
+    </table>
+</div>
+<!-- 联系人列表/参展人员列表 -->
+<div style="width:100%;  margin-left: auto;margin-right: auto;" align="center">
+	<!-- 联系人列表 -->
+    <div style="float: left;width: 49%;">
+        <div style="height: 250px;float: left" class="easyui-panel" title="联系人列表">
+            <table id="contacts${id}" data-options="url: '${base}/user/queryExhibitorBackupContactList',
+            									 	 loadMsg: '数据加载中......',
+									             	 singleSelect:false,	//只能单行选择：关闭
+									             	 fit:true,
+									             	 fitColumns:true,
+									             	 idField:'id',
+												 	 queryParams: {id:${id}},
+									             	 pagination:'true',
+									             	 pageSize:'20'">
+				<thead>
+					<tr>
+						<th data-options="field:'ck',checkbox:true"></th>
+						<th data-options="field: 'name', title: '姓名', width: $(this).width() * 0.1"></th>
+						<th data-options="field: 'position', title: '职位', width: $(this).width() * 0.1"></th>
+						<th data-options="field: 'phone', title: '联系电话', width: $(this).width() * 0.2"></th>
+						<th data-options="field: 'email', title: '电子邮箱', width: $(this).width() * 0.2"></th>
+						<th data-options="field: 'address', title: '地址', width: $(this).width() * 0.2"></th>
+						<th data-options="field: 'expressNumber', title: '快递单号', width: $(this).width() * 0.2"></th>
+					</tr>
+				</thead>
+            </table>
+        </div>
+    </div>
+    <!-- 参展人员列表 -->
+    <div style="float: right;width: 49%;">
+        <div style="height: 250px;" class="easyui-panel" title="参展人员列表">
+            <table id="joiners${id}" data-options="url: '${base}/user/queryExhibitorBackupJoinerList',
+            									 	loadMsg: '数据加载中......',
+									             	singleSelect:false,	//只能单行选择：关闭
+									             	fit:true,
+									             	fitColumns:true,
+									             	idField:'id',
+												 	queryParams: {id:${id}},
+									             	pagination:'true',
+									             	pageSize:'10'">
+				<thead>
+					<tr>
+						<th data-options="field:'ck',checkbox:true"></th>
+						<th data-options="field: 'name', title: '姓名', width: $(this).width() * 0.25"></th>
+						<th data-options="field: 'position', title: '职位', width: $(this).width() * 0.25"></th>
+						<th data-options="field: 'telphone', title: '手机', width: $(this).width() * 0.25"></th>
+						<th data-options="field: 'email', title: '邮件', width: $(this).width() * 0.25"></th>
+					</tr>
+				</thead>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- VISA列表 -->
+<div id="visaTab" style="width:100%;  margin-left: auto;margin-right: auto;" align="center">
+    <div style="float: left;width: 100%;">
+        <div style="height: 250px;float: left" class="easyui-panel" title="VISA列表">
+            <table id="visas${id}" data-options="url:'${base}/user/queryExhibitorBackupVisaList',
+            								 loadMsg: '数据加载中......',
+									         singleSelect:false,	//只能单行选择：关闭
+									         fit:true,
+									         fitColumns:true,
+									         idField:'id',
+											 queryParams: {id:${id}},
+									         rownumbers: true,
+									         pagination:'true',
+									         pageSize:'20'">
+                <thead>
+                <tr>
+                    <th data-options="field:'ck',checkbox:true"></th>
+                    <th data-options="field: 'passportName', title: '姓名', width: $(this).width() * 0.16"></th>
+                    <th data-options="field: 'nationality', title: '国藉', width: $(this).width() * 0.16"></th>
+                    <th data-options="field: 'companyName', title: '公司', width: $(this).width() * 0.16"></th>
+                    <th data-options="field: 'updateTime', formatter:formatDatebox, title: '更新时间', width: $(this).width() * 0.17"></th>
+                    <th data-options="field: 'id', formatter:formatImage, title: '查看护照图片', width: $(this).width() * 0.18">
+                    <th data-options="field: 'createTime', formatter:formatDatebox, title: '登记时间', width: $(this).width() * 0.17"></th>
+                </tr>
+                </thead>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- 显示产品信息表单  -->
+<div id="modifyProductDlg" data-options="iconCls:'icon-edit',modal:true">
+    <form id="modifyProductForm" name="modifyProductForm">
+        <table style="width: 320px;margin: 20px auto">
+            <tr>
+                <td style="width: 90px;text-align: right">产品名称：</td>
+                <td><label class="easyui-validatebox" type="text" name="productName" id="productName"/></td>
+            </tr>
+            <tr>
+                <td style="width: 90px;text-align: right">产品型号：</td>
+                <td><label class="easyui-validatebox" type="text" name="productModel" id="productModel"/></td>
+            </tr>
+            <tr>
+                <td style="width: 90px;text-align: right">产品源产地：</td>
+                <td><label class="easyui-validatebox" type="text" name="origin" id="origin"/></td>
+            </tr>
+            <tr>
+                <td style="width: 90px;text-align: right">产品关键词：</td>
+                <td><label class="easyui-validatebox" type="text" name="keyWords" id="keyWords"/></td>
+            </tr>
+            <tr>
+                <td style="width: 90px;text-align: right">产品描述：</td>
+                <td><label class="easyui-validatebox" type="text" name="description" id="description"/></td>
+            </tr>
+            <tr>
+                <td style="width: 90px;text-align: right">产品品牌：</td>
+                <td><label class="easyui-validatebox" type="text" name="productBrand" id="productBrand"/></td>
+            </tr>
+            <tr>
+                <td style="width: 90px;text-align: right">产品容量：</td>
+                <td><label class="easyui-validatebox" type="text" name="productSpec" id="productSpec"/></td>
+            </tr>
+            <tr>
+                <td style="width: 90px;text-align: right">产品数量：</td>
+                <td><label class="easyui-validatebox" type="text" name="productCount" id="productCount"/></td>
+            </tr>
+            <tr>
+                <td style="width: 90px;text-align: right">包装描述：</td>
+                <td><label class="easyui-validatebox" type="text" name="packageDescription" id="packageDescription"/></td>
+            </tr>
+            <tr>
+                <td style="width: 90px;text-align: right">价格描述：</td>
+                <td><label class="easyui-validatebox" type="text" name="priceDescription" id="priceDescription"/></td>
+            </tr>
+        </table>
+    </form>
+</div>
+
+<!-- 联系人信息  -->
+<div id="modifyContactDlg" data-options="iconCls:'icon-edit',modal:true">
+    <form id="modifyContactForm" name="modifyContactForm">
+        <table style="width: 320px;margin: 20px auto">
+            <tr>
+                <td style="width: 90px;text-align: right">联系人姓名：</td>
+                <td><label class="easyui-validatebox" type="text" name="contact_name" id="contact_name"/></td>
+            </tr>
+            <tr>
+                <td style="width: 90px;text-align: right">联系人职称：</td>
+                <td><labelut class="easyui-validatebox" type="text" name="contact_position" id="contact_position"/></td>
+            </tr>
+            <tr>
+                <td style="width: 90px;text-align: right">联系人电话：</td>
+                <td><label class="easyui-validatebox" type="text" name="contact_phone" id="contact_phone"/></td>
+            </tr>
+            <tr>
+                <td style="width: 90px;text-align: right">邮箱：</td>
+                <td><labelut class="easyui-validatebox" type="text" name="contact_email" id="contact_email"/></td>
+            </tr>
+            <tr>
+                <td style="width: 90px;text-align: right">联系人地址：</td>
+                <td><label class="easyui-validatebox" type="text" name="contact_address" id="contact_address"/></td>
+            </tr>
+        </table>
+    </form>
+</div>
+
+<!-- 参展人员信息  -->
+<div id="modifyExhibitorJoinerDlg" data-options="iconCls:'icon-edit',modal:true">
+    <form id="modifyExhibitorJoinerForm" name="modifyExhibitorJoinerForm">
+        <table style="width: 320px;margin: 20px auto">
+            <tr>
+                <td style="width: 90px;text-align: right">参展人员姓名：</td>
+                <td><label class="easyui-validatebox" type="text" name="joiner_name" id="joiner_name"/></td>
+            </tr>
+            <tr>
+                <td style="width: 90px;text-align: right">参展人员职称：</td>
+                <td><label class="easyui-validatebox" type="text" name="joiner_position" id="joiner_position"/></td>
+            </tr>
+            <tr>
+                <td style="width: 90px;text-align: right">参展人员电话：</td>
+                <td><label class="easyui-validatebox" type="text" name="joiner_telphone" id="joiner_telphone"/></td>
+            </tr>
+            <tr>
+                <td style="width: 90px;text-align: right">参展人员邮箱：</td>
+                <td><label class="easyui-validatebox" type="text" name="joiner_email" id="joiner_email"/></td>
+            </tr>
+        </table>
+    </form>
+</div>
+
+<!-- VISA信息  -->
+<div id="modifyExhibitorVisaDlg" data-options="iconCls:'icon-edit',modal:true">
+    <form id="modifyExhibitorVisaForm" name="modifyExhibitorVisaForm">
+        <table style="width: 98%;margin-left: 10px;margin-top: 5px;margin-bottom: 10px">
+            <tr>
+                <td style="width: 120px;text-align: right">姓名：</td>
+                <td><label class="easyui-validatebox" type="text" name="passportName" id="passportName"/></td>
+                <td style="width: 120px;text-align: right">性别：</td>
+                <td><label class="easyui-validatebox" type="text" name="gender" id="gender"/></td>
+            </tr>
+            <tr>
+                <td style="width: 120px;text-align: right">职位：</td>
+                <td><label class="easyui-validatebox" type="text" name="jobTitle" id="jobTitle"/></td>
+                <td style="width: 120px;text-align: right">国藉：</td>
+                <td><label class="easyui-validatebox" type="text" name="nationality" id="nationality"/></td>
+            </tr>
+            <tr>
+                <td style="width: 120px;text-align: right">展位号：</td>
+                <td><label class="easyui-validatebox" type="text" name="boothNo" id="boothNo"/></td>
+                <td style="width: 120px;text-align: right">参展人员：</td>
+                <td><label class="easyui-validatebox" type="text" name="joinerInfo" id="joinerInfo"/></td>
+            </tr>
+            <tr>
+                <td style="width: 120px;text-align: right">公司名称：</td>
+                <td><label class="easyui-validatebox" type="text" name="companyName" id="companyName"/></td>
+                <td style="width: 120px;text-align: right">公司网址：</td>
+                <td><label class="easyui-validatebox" type="text" name="companyWebsite" id="companyWebsite"/></td>
+            </tr>
+            <tr>
+                <td style="width: 120px;text-align: right">邮箱：</td>
+                <td><label class="easyui-validatebox" type="text" name="visa_email" id="visa_email"/></td>
+                <td style="width: 120px;text-align: right">护照ID：</td>
+                <td><label class="easyui-validatebox" type="text" name="passportNo" id="passportNo"/></td>
+            </tr>
+            <tr>
+                <td style="width: 120px;text-align: right">地址：</td>
+                <td><label class="easyui-validatebox" type="text" name="address" id="address"/></td>
+                <td style="width: 120px;text-align: right">手机：</td>
+                <td><label class="easyui-validatebox" type="text" name="tel" id="tel"/></td>
+            </tr>
+            <tr>
+                <td style="width: 120px;text-align: right">户照到期时间：</td>
+                <td><label class="easyui-validatebox" type="text" name="expDate" id="expDate"/></td>
+                <td style="width: 120px;text-align: right">传真：</td>
+                <td><labelut class="easyui-validatebox" type="text" name="fax" id="fax"/></td>
+            </tr>
+            <tr>
+                <td style="width: 120px;text-align: right">在华停留开始时间：</td>
+                <td><label class="easyui-validatebox" type="text" name="from" id="from"/></td>
+                <td style="width: 120px;text-align: right">在华停留结束时间：</td>
+                <td><label class="easyui-validatebox" type="text" name="to" id="to"/></td>
+            </tr>
+            <tr>
+                <td style="width: 120px;text-align: right">创建时间：</td>
+                <td><label class="easyui-validatebox" type="text" name="createTime" id="createTime"/></td>
+                <td style="width: 120px;text-align: right">更新时间：</td>
+                <td><label class="easyui-validatebox" type="text" name="updateTime" id="updateTime"/></td>
+            </tr>
+            <tr>
+                <td style="width: 120px;text-align: right">户照图片：</td>
+                <td colspan="9" style="width: 92%;text-align: left;word-break:break-all">
+                    <img src="" id="passportPage" name="passportPage" class="img-rounded" width="350" />
+                </td>
+            </tr>
+            <tr>
+                <td style="width: 120px;text-align: right">营业执照：</td>
+                <td colspan="9" style="width: 92%;text-align: left;word-break:break-all">
+                    <img src="" id="businessLicense" name="businessLicense" class="img-rounded" width="350" />
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+
+<script>
+var country = [];
+var province = [];
+var checkedProducts = [];
+var checkedJoiners = [];
+var checkedContacts = [];
+var checkedVisas = [];
+var previewExhibitorList = [];
+var previewExhibitorIndex = 0;
+/********************************************************自定义函数开始****************************************************************/
+//显示护照
+function formatImage(val, row) {
+    if (row.passportPage != null) {
+        return "<a href='${base}/user/showVisaBackupPassportPage?vid=" + val + "' target='_blank'>查看</a>";
+    } else {
+        return null;
+    }
+}
+
+//日期时间格式转换
+function formatDatebox(value) {
+    if (value == null || value == '') {
+        return '';
+    }
+    var dt;
+    if (value instanceof Date) {
+        dt = value;
+    }
+    else {
+        dt = new Date(value);
+        if (isNaN(dt)) {
+            value = value.replace(/\/Date\((-?\d+)\)\//, '$1'); //标红的这段是关键代码，将那个长字符串的日期值转换成正常的JS日期格式
+            dt = new Date();
+            dt.setTime(value);
+        }
+    }
+
+    return dt.format("yyyy-MM-dd h:m");   //这里用到一个javascript的Date类型的拓展方法，这个是自己添加的拓展方法，在后面的步骤3定义
+}
+
+Date.prototype.format = function (format)
+{
+    var o = {
+        "M+": this.getMonth() + 1, //month
+        "d+": this.getDate(),    //day
+        "h+": this.getHours(),   //hour
+        "m+": this.getMinutes(), //minute
+        "s+": this.getSeconds(), //second
+        "q+": Math.floor((this.getMonth() + 3) / 3),  //quarter
+        "S": this.getMilliseconds() //millisecond
+    }
+    if (/(y+)/.test(format)) format = format.replace(RegExp.$1,
+            (this.getFullYear() + "").substr(4 - RegExp.$1.length));
+    for (var k in o) if (new RegExp("(" + k + ")").test(format))
+        format = format.replace(RegExp.$1,
+                RegExp.$1.length == 1 ? o[k] :
+                        ("00" + o[k]).substr(("" + o[k]).length));
+    return format;
+}
+
+function country_change(countryId){
+	$.ajax({
+		type:"POST",
+		dataType:"json",
+		url:"${base}/user/queryProvinceByCountryId",
+		data:{ 'countryId': countryId },
+		success : function(result) {
+			if(result){
+				$("#province").html('');
+				document.getElementById('province').disabled=false;
+   		 		$("#province").append('<option value="">请选择</option>');
+   		 		for(var i=0,a;a=province[i++];){
+//	   		 		    console.log(a);
+   		 			$("#province").append('<option value="'+a.id+'">'+a.chineseName+'</option>');
+   		 		}
+			}
+		},
+		error : function(result) {
+			$("#province").html('');
+			document.getElementById('province').disabled=true;
+		}
+	});
+}
+
+function refreshExhibitorInfo(){
+	var tabRow = exhibitorInfoTable.rows;
+	var tabCell0 = tabRow[0].cells;
+    /*公司中文 */tabCell0[1].innerText = document.baseExhibitorInfoForm.company.value;
+    /*公司英文 */tabCell0[3].innerText = document.baseExhibitorInfoForm.companyEn.value;
+	/* 电话   */tabCell0[5].innerText = document.baseExhibitorInfoForm.phone.value;
+	/* 传真   */tabCell0[7].innerText = document.baseExhibitorInfoForm.fax.value;
+	/* 邮箱   */tabCell0[9].innerHTML = "<a href='mailto:"+document.baseExhibitorInfoForm.email.value+"' >"+document.baseExhibitorInfoForm.email.value+"</a>";
+	var tabCell1 = tabRow[1].cells;
+	/*中文地址*/tabCell1[1].innerText = document.baseExhibitorInfoForm.address.value;
+	/*英文地址*/tabCell1[3].innerText = document.baseExhibitorInfoForm.addressEn.value;
+	/*中文楣牌*/tabCell1[5].innerText = document.baseExhibitorInfoForm.meipai.value
+	/*英文楣牌*/tabCell1[7].innerText = document.baseExhibitorInfoForm.meipaiEn.value;
+	/*地税税号*/tabCell1[9].innerText = document.baseExhibitorInfoForm.invoiceNo.value;
+	var tabCell2 = tabRow[2].cells;
+	/*中文产品*/tabCell2[3].innerText = document.baseExhibitorInfoForm.mainProduct.value;
+	/*英文产品*/tabCell2[5].innerText = document.baseExhibitorInfoForm.mainProductEn.value;
+    /* 网址  */tabCell0[7].innerHTML = "<a href='"+document.baseExhibitorInfoForm.website.value+"' >"+document.baseExhibitorInfoForm.website.value+"</a>";
+    /*发票抬头*/tabCell0[9].innerText = document.baseExhibitorInfoForm.invoiceTitle.value;
+	var tabCell3 = tabRow[3].cells;
+	/*公司简介*/tabCell3[1].innerText = document.baseExhibitorInfoForm.mark.value;
+	/*Logo预览*/document.logoImg.src="${base}/user/showExhibitorBackupLogo?id=${id}";
+}
+
+function change() {
+    var pic = document.getElementById("preview");
+    var file = document.getElementById("logoFile");
+    var ext=file.value.substring(file.value.lastIndexOf(".")+1).toLowerCase();
+    // gif在IE浏览器暂时无法显示
+    if(ext!='png' && ext!='jpg' && ext!='jpeg' && ext!='gif'){
+        alert("文件必须为图片！"); return;
+    }
+    if((file.offsetWidth * file.offsetHeight)/100 > 1024*1024){
+        alert("文件大小超过1M，请重新选择图片！");
+        return;
+    }
+    // IE浏览器
+    if(document.all){
+        file.select();
+        var reallocalpath = document.selection.createRange().text;
+        var ie6 = /msie 6/i.test(navigator.userAgent);
+        // IE6浏览器设置img的src为本地路径可以直接显示图片
+        if(ie6){
+        	pic.src = reallocalpath;
+        }else{
+            // 非IE6版本的IE由于安全问题直接设置img的src无法显示本地图片，但是可以通过滤镜来实现
+            pic.style.filter = "progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod='image',src=\"" + reallocalpath + "\")";
+            // 设置img的src为base64编码的透明图片 取消显示浏览器默认图片
+            pic.src = 'data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==';
+        }
+    }else{
+        html5Reader(file);
+    }
+}
+
+function html5Reader(file){
+    var file = file.files[0];
+    var reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = function(e){
+        var pic = document.getElementById("preview");
+        pic.src=this.result;
+    }
+}
+
+function exhibitorInfo(parm){
+	var file = document.getElementById("logoFile").value;
+    if(file == null || file == ""){
+		//logo为空
+    	if ($("#baseExhibitorInfoForm").form("validate")) {
+			$.ajax({
+				url: "${base}/user/modifyExhibitorInfo",
+	            type: "post",
+	            dataType: "json",
+	            data: $("#baseExhibitorInfoForm").serializeJson(),
+	            success: function (data) {
+	                if (data.resultCode == 0) {
+	                    $("#baseExhibitorInfoDlg").dialog("close");
+	                    if(parm == "modify") refreshExhibitorInfo();
+	                    else if(parm == "add") window.location.reload();
+	                    $.messager.show({
+	                        title: '成功',
+	                        msg: '展商基本信息修改成功',
+	                        timeout: 5000,
+	                        showType: 'slide'
+	                    });
+	                } else {
+	                    $.messager.alert('错误', '系统错误');
+	                }
+				}
+			});
+		}
+	} else {
+		//logo不为空
+		var index = file.lastIndexOf(".");
+    	if(file.lastIndexOf(".") < 0) {
+    		$.messager.alert('提示', '上传的文件格式不正确，请选择png,jpg,jpeg,gif格式文件！');
+    	} else {
+    		var ext = file.substring(index + 1, file.length);
+    		if(ext!='png' && ext!='jpg' && ext!='jpeg' && ext!='gif'){
+    			$.messager.alert('提示', '上传的文件格式不正确，请选择png,jpg,jpeg,gif格式文件！');
+            } else{
+            	// 开始上传
+            	$.ajaxFileUpload({
+					url:'upload/modifyInfo',
+					dataType: 'text/html',
+					data:$("#baseExhibitorInfoForm").serializeJson(),
+					fileElementId:'logoFile',
+					success: function (data){
+						$("#baseExhibitorInfoDlg").dialog("close");
+	                    window.location.reload();
+	                    $.messager.show({
+	                        title: '成功',
+	                        msg: '展商基本信息修改成功',
+	                        timeout: 5000,
+	                        showType: 'slide'
+	                    });
+					},
+					error: function (data){
+						$.messager.alert('错误', data);
+    		        }
+        		});
+            }
+    	}
+	}
+}
+/********************************************************自定义函数结束****************************************************************/
+$(document).ready(function () {
+	//加载国家列表
+	$.ajax({
+		type:"POST",
+		dataType:"json",
+		url:"${base}/user/queryAllCountry",
+		success : function(result) {
+			if(result){
+				country = result;
+			}
+		}
+	});
+
+	//加载省份列表
+	$.ajax({
+		type:"POST",
+		dataType:"json",
+		url:"${base}/user/queryAllProvince",
+		success : function(result) {
+			if(result){
+				province = result;
+			}
+		}
+	});
+	
+    // 产品列表渲染
+    $("#products${id}").datagrid({
+        onSelect:function (rowIndex, rowData){
+        	var row = $('#products${id}').datagrid('getSelections');
+			for (var i = 0; i < row.length; i++) {
+				if (findCheckedProduct(row[i].id) == -1) {
+					checkedProducts.push(row[i].id);
+				}
+			}
+        },
+        onUnselect:function (rowIndex, rowData){
+			var k = findCheckedProduct(rowData.id);
+			if (k != -1) {
+				checkedProducts.splice(k, 1);
+			}
+        },
+        onSelectAll:function (rows){
+        	for (var i = 0; i < rows.length; i++) {
+        		var k = findCheckedProduct(rows[i].id);
+				if (k == -1) {
+					checkedProducts.push(rows[i].id);
+				}
+			}
+        },
+        onUnselectAll:function (rows){
+        	for (var i = 0; i < rows.length; i++) {
+				var k = findCheckedProduct(rows[i].id);
+				if (k != -1) {
+					checkedProducts.splice(k, 1);
+				}
+			}
+        },
+        onLoadSuccess:function(data){
+			if(data.rows.length==0){
+				var body = $(this).data().datagrid.dc.body2;
+				body.find('table tbody').append('<tr><td width="'+body.width()+'" style="height: 25px; text-align: center;" colspan="4">没有数据</td></tr>');
+			}
+		},
+        onDblClickRow: function (index, field, value) {
+            document.modifyProductForm.id.value = field.id;
+            document.getElementById('productName').innerHTML = field.productName;
+            document.getElementById('productModel').innerHTML = field.productModel;
+            document.getElementById('origin').innerHTML = field.origin;
+            document.getElementById('keyWords').innerHTML = field.keyWords;
+            document.getElementById('description').innerHTML = field.description;
+            document.getElementById('productBrand').innerHTML = field.productBrand;
+            document.getElementById('productSpec').innerHTML = field.productSpec;
+            document.getElementById('productCount').innerHTML = field.productCount;
+            document.getElementById('packageDescription').innerHTML = field.packageDescription;
+            document.getElementById('priceDescription').innerHTML = field.priceDescription;
+            $("#modifyProductDlg").dialog("open");
+        }
+    }).datagrid('getPager').pagination({  
+        pageSize: 20,//每页显示的记录条数，默认为10  
+        pageList: [10,20,30,40,50],//可以设置每页记录条数的列表  
+        beforePageText: '第',//页数文本框前显示的汉字  
+        afterPageText: '页    共 {pages} 页',  
+        displayMsg: '当前显示 {from} - {to} 条记录   共 {total} 条记录'
+    });
+    function findCheckedProduct(id) {
+		for (var i = 0; i < checkedProducts.length; i++) {
+			if (checkedProducts[i] == id) return i;
+		}
+		return -1;
+	}
+
+    $("#openWebsite").click(function () {
+        var href = document.getElementById("websitehref").innerText;
+        if(href.indexOf("http://") >= 0 ){
+        window.open(href);
+    }else {
+        href = "http://" + href;
+        window.open(href);
+    }
+    });
+
+	// 联系人列表渲染
+    $("#contacts${id}").datagrid({
+        onSelect:function (rowIndex, rowData){
+        	var row = $('#contacts${id}').datagrid('getSelections');
+			for (var i = 0; i < row.length; i++) {
+				if (findCheckedContacts(row[i].id) == -1) {
+					checkedContacts.push(row[i].id);
+				}
+			}
+        },
+        onUnselect:function (rowIndex, rowData){
+			var k = findCheckedContacts(rowData.id);
+			if (k != -1) {
+				checkedContacts.splice(k, 1);
+			}
+        },
+        onSelectAll:function (rows){
+        	for (var i = 0; i < rows.length; i++) {
+        		var k = findCheckedContacts(rows[i].id);
+				if (k == -1) {
+					checkedContacts.push(rows[i].id);
+				}
+			}
+        },
+        onUnselectAll:function (rows){
+        	for (var i = 0; i < rows.length; i++) {
+				var k = findCheckedContacts(rows[i].id);
+				if (k != -1) {
+					checkedContacts.splice(k, 1);
+				}
+			}
+        },
+        onLoadSuccess:function(data){
+			if(data.rows.length==0){
+				var body = $(this).data().datagrid.dc.body2;
+				body.find('table tbody').append('<tr><td width="'+body.width()+'" style="height: 25px; text-align: center;" colspan="4">没有数据</td></tr>');
+			}
+		},
+        onDblClickRow: function (index, field, value) {
+            document.modifyContactForm.id.innerHTML = field.id;
+            document.getElementById('contact_name').innerHTML = field.name;
+            document.getElementById('contact_position').innerHTML = field.position;
+            document.getElementById('contact_phone').innerHTML = field.phone;
+            document.getElementById('contact_email').innerHTML = field.email;
+            document.getElementById('contact_address').innerHTML = field.address;
+            $("#modifyContactDlg").dialog("open");
+        }
+    }).datagrid('getPager').pagination({  
+        pageSize: 20,//每页显示的记录条数，默认为10  
+        pageList: [10,20,30,40,50],//可以设置每页记录条数的列表  
+        beforePageText: '第',//页数文本框前显示的汉字  
+        afterPageText: '页    共 {pages} 页',  
+        displayMsg: '当前显示 {from} - {to} 条记录   共 {total} 条记录'
+    });
+
+    function findCheckedContacts(id) {
+		for (var i = 0; i < checkedContacts.length; i++) {
+			if (checkedContacts[i] == id) return i;
+		}
+		return -1;
+	}
+    
+	// 参展人员列表渲染
+    $("#joiners${id}").datagrid({
+        onSelect:function (rowIndex, rowData){
+        	var row = $('#joiners${id}').datagrid('getSelections');
+			for (var i = 0; i < row.length; i++) {
+				if (findCheckedJoiners(row[i].id) == -1) {
+					checkedJoiners.push(row[i].id);
+				}
+			}
+        },
+        onUnselect:function (rowIndex, rowData){
+			var k = findCheckedJoiners(rowData.id);
+			if (k != -1) {
+				checkedJoiners.splice(k, 1);
+			}
+        },
+        onSelectAll:function (rows){
+        	for (var i = 0; i < rows.length; i++) {
+        		var k = findCheckedJoiners(rows[i].id);
+				if (k == -1) {
+					checkedJoiners.push(rows[i].id);
+				}
+			}
+        },
+        onUnselectAll:function (rows){
+        	for (var i = 0; i < rows.length; i++) {
+				var k = findCheckedJoiners(rows[i].id);
+				if (k != -1) {
+					checkedJoiners.splice(k, 1);
+				}
+			}
+        },
+        onLoadSuccess:function(data){
+			if(data.rows.length==0){
+				var body = $(this).data().datagrid.dc.body2;
+				body.find('table tbody').append('<tr><td width="'+body.width()+'" style="height: 25px; text-align: center;" colspan="4">没有数据</td></tr>');
+			}
+		},
+        onDblClickRow: function (index, field, value) {
+            document.modifyExhibitorJoinerForm.id.innerHTML = field.id;
+            document.getElementById('joiner_name').innerHTML = field.name;
+            document.getElementById('joiner_position').innerHTML = field.position;
+            document.getElementById('joiner_telphone').innerHTML = field.telphone;
+            document.getElementById('joiner_email').innerHTML = field.email;
+            $("#modifyExhibitorJoinerDlg").dialog("open");
+        }
+    }).datagrid('getPager').pagination({  
+        pageSize: 10,//每页显示的记录条数，默认为10
+        pageList: [10,20,30,40,50],//可以设置每页记录条数的列表  
+        beforePageText: '第',//页数文本框前显示的汉字  
+        afterPageText: '页    共 {pages} 页',  
+        displayMsg: '当前显示 {from} - {to} 条记录   共 {total} 条记录'
+    });
+
+    function findCheckedJoiners(id) {
+		for (var i = 0; i < checkedJoiners.length; i++) {
+			if (checkedJoiners[i] == id) return i;
+		}
+		return -1;
+	}
+
+    // VISA列表渲染
+    $("#visas${id}").datagrid({
+        onSelect:function (rowIndex, rowData){
+            var row = $('#visas${id}').datagrid('getSelections');
+            for (var i = 0; i < row.length; i++) {
+                if (findCheckedProduct(row[i].id) == -1) {
+                    checkedVisas.push(row[i].id);
+                }
+            }
+        },
+        onUnselect:function (rowIndex, rowData){
+            var k = findCheckedProduct(rowData.id);
+            if (k != -1) {
+                checkedVisas.splice(k, 1);
+            }
+        },
+        onSelectAll:function (rows){
+            for (var i = 0; i < rows.length; i++) {
+                var k = findCheckedProduct(rows[i].id);
+                if (k == -1) {
+                    checkedVisas.push(rows[i].id);
+                }
+            }
+        },
+        onUnselectAll:function (rows){
+            for (var i = 0; i < rows.length; i++) {
+                var k = findCheckedProduct(rows[i].id);
+                if (k != -1) {
+                    checkedVisas.splice(k, 1);
+                }
+            }
+        },
+        onLoadSuccess:function(data){
+            if(data.rows.length==0){
+                var body = $(this).data().datagrid.dc.body2;
+                body.find('table tbody').append('<tr><td width="'+body.width()+'" style="height: 25px; text-align: center;" colspan="4">没有数据</td></tr>');
+            }
+        },
+        onDblClickRow: function (index, field, value) {
+            document.modifyExhibitorVisaForm.id.value = field.id;
+            document.getElementById('passportName').innerHTML = field.passportName;
+            document.getElementById('gender').innerHTML = field.passportName;
+            document.getElementById('jobTitle').innerHTML = field.passportName;
+            document.getElementById('nationality').innerHTML = field.passportName;
+            document.getElementById('boothNo').innerHTML = field.passportName;
+            document.getElementById('joinerInfo').innerHTML = field.passportName;
+            document.getElementById('companyName').innerHTML = field.passportName;
+            document.getElementById('companyWebsite').innerHTML = field.passportName;
+            document.getElementById('visa_email').innerHTML = field.passportName;
+            document.getElementById('passportNo').innerHTML = field.passportName;
+            document.getElementById('address').innerHTML = field.passportName;
+            document.getElementById('tel').innerHTML = field.passportName;
+            document.getElementById('expDate').innerHTML = field.passportName;
+            document.getElementById('from').innerHTML = field.passportName;
+            document.getElementById('to').innerHTML = field.passportName;
+            document.getElementById('fax').innerHTML = field.passportName;
+            document.getElementById('createTime').innerHTML = field.passportName;
+            document.getElementById('updateTime').innerHTML = field.passportName;
+            document.modifyExhibitorVisaForm.passportPage.src = "${base}/user/showVisaBackupPassportPage?vid=" + field.id;
+            document.modifyExhibitorVisaForm.businessLicense.src = "${base}/user/showVisaBackupBusinessPage?vid=" + field.id;
+            $("#modifyExhibitorVisaDlg").dialog("open");
+        }
+    }).datagrid('getPager').pagination({
+        pageSize: 20,//每页显示的记录条数，默认为10
+        pageList: [10,20,30,40,50],//可以设置每页记录条数的列表
+        beforePageText: '第',//页数文本框前显示的汉字
+        afterPageText: '页    共 {pages} 页',
+        displayMsg: '当前显示 {from} - {to} 条记录   共 {total} 条记录'
+    });
+    function findCheckedProduct(id) {
+        for (var i = 0; i < checkedVisas.length; i++) {
+            if (checkedVisas[i] == id) return i;
+        }
+        return -1;
+    }
+
+    $('#modifyProductDlg').dialog({
+        title: '产品信息',
+        width: 360,
+        height: 420,
+        closed: true,
+        cache: false,
+        modal: true,
+        buttons: [
+            {
+                text: '关闭',
+                handler: function () {
+                    document.getElementById("modifyProductForm").reset();
+                    $("#modifyProductDlg").dialog("close");
+                }
+            }
+        ]
+    });
+
+    $('#modifyContactDlg').dialog({
+        title: '联系人信息',
+        left: 375,
+        top: 675,
+        width: 350,
+        height: 280,
+        closed: true,
+        cache: false,
+        modal: true,
+        buttons: [
+            {
+                text: '关闭',
+                handler: function () {
+                    document.getElementById("modifyContactForm").reset();
+                    $("#modifyContactDlg").dialog("close");
+                }
+            }
+        ]
+    });
+
+    $('#modifyExhibitorJoinerDlg').dialog({
+        title: '参展人员信息',
+        left: 375,
+        top: 675,
+        width: 350,
+        height: 240,
+        closed: true,
+        cache: false,
+        modal: true,
+        buttons: [
+            {
+                text: '关闭',
+                handler: function () {
+                    document.getElementById("modifyExhibitorJoinerForm").reset();
+                    $("#modifyExhibitorJoinerDlg").dialog("close");
+                }
+            }
+        ]
+    });
+
+    $('#modifyExhibitorVisaDlg').dialog({
+        title: 'VISA信息',
+        left: 100,
+        top: 100,
+        width: 800,
+        height: 650,
+        closed: true,
+        cache: false,
+        modal: true,
+        buttons: [
+            {
+                text: '关闭',
+                handler: function () {
+                    document.getElementById("modifyExhibitorVisaForm").reset();
+                    $("#modifyExhibitorVisaDlg").dialog("close");
+                }
+            }
+        ]
+    });
+});
+</script>
+</body>
+</html>
